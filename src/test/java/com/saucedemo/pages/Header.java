@@ -29,6 +29,10 @@ public class Header {
         return Integer.parseInt(string);
     }
 
+    public String getTextHeader() {
+        return driver.findElement(By.xpath("//div[@class='header_label']/div")).getText();
+    }
+
     public String getTextHeaderSecondaryContainer() {
         return driver.findElement(By.xpath("//div[@class='header_secondary_container']/span")).getText();
     }

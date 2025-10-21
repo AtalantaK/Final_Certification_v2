@@ -12,8 +12,6 @@ import java.util.List;
 // для работы с корзиной
 public class CartPage {
 
-    //todo: переделать!
-
     WebDriver driver;
 
     public CartPage(WebDriver driver) {
@@ -62,8 +60,10 @@ public class CartPage {
         ScreenshotUtils.makeScreeshot(driver);
     }
 
-    public void openItemPageByName(String itemName) {
+    @Step("Открыть товар в корзине")
+    public void openItemPageByName(String itemName) throws IOException {
         WebElement itemLink = driver.findElement(By.xpath("//div[text()='" + itemName + "']"));
         itemLink.click();
+        ScreenshotUtils.makeScreeshot(driver);
     }
 }
