@@ -2,6 +2,7 @@ package com.saucedemo.utils;
 
 public final class Constants {
 
+    //todo: вытащить юзеров в enum
     public static final String STANDARD_USER = "standard_user";
     public static final String LOCKED_OUT_USER = "locked_out_user";
     public static final String PERFORMANCE_GLITCH_USER = "performance_glitch_user";
