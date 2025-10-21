@@ -1,6 +1,7 @@
 package com.saucedemo.tests;
 
 import com.saucedemo.config.Config;
+import com.saucedemo.pages.Footer;
 import com.saucedemo.pages.LoginPage;
 import com.saucedemo.utils.Constants;
 import com.saucedemo.utils.WebDriverUtils;
@@ -44,6 +45,12 @@ public class Login_AT {
         //todo: возможно потом нужно будет переписать строчку ниже когда появится работа с корзиной
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("shopping_cart_link"))));
         //wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//a[@class='shopping_cart_link']"))));
+
+        Footer footer = new Footer(driver);
+        System.out.println(footer.getFooterCopyright());
+        System.out.println(footer.getTwitterLink());
+        System.out.println(footer.getFacebookLink());
+        System.out.println(footer.getLinkedinLink());
     }
 
     @Test
