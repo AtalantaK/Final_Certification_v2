@@ -2,6 +2,7 @@ package com.saucedemo.tests;
 
 import com.saucedemo.config.Config;
 import com.saucedemo.pages.Footer;
+import com.saucedemo.pages.Header;
 import com.saucedemo.pages.LoginPage;
 import com.saucedemo.utils.Constants;
 import com.saucedemo.utils.PageFactory;
@@ -23,6 +24,7 @@ import static io.qameta.allure.SeverityLevel.NORMAL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+@DisplayName("Тесты секьюрити матрицы")
 public class Login_AT {
 
     private WebDriver driver;
@@ -44,16 +46,8 @@ public class Login_AT {
         LoginPage loginPage = pageFactory.createLoginPage();
         loginPage.login(Constants.STANDARD_USER, Config.get("PASSWORD"));
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        //todo: возможно потом нужно будет переписать строчку ниже когда появится работа с корзиной
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("shopping_cart_link"))));
-        //wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//a[@class='shopping_cart_link']"))));
-
-        Footer footer = pageFactory.createFooter();
-        System.out.println(footer.getFooterCopyright());
-        System.out.println(footer.getTwitterLink());
-        System.out.println(footer.getFacebookLink());
-        System.out.println(footer.getLinkedinLink());
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//a[@class='shopping_cart_link']"))));
     }
 
     @Test

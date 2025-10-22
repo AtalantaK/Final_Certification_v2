@@ -12,9 +12,9 @@ import java.time.Duration;
 public class WebDriverUtils {
     public static WebDriver driverSetUp() {
         EdgeOptions options = new EdgeOptions();
-//        options.addArguments("--headless");  // Включаем headless режим
-//        options.addArguments("--disable-gpu"); // Для Windows, чтобы избежать ошибок
-//        options.addArguments("--no-sandbox");  // Для CI/CD, если нужно
+        options.addArguments("--headless");  // Включаем headless режим
+        options.addArguments("--disable-gpu"); // Для Windows, чтобы избежать ошибок
+        options.addArguments("--no-sandbox");  // Для CI/CD, если нужно
         options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
 
         WebDriver driver = new EdgeDriver(options);
