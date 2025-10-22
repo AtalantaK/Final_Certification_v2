@@ -12,7 +12,7 @@ import java.util.List;
 // для работы с корзиной
 public class CartPage {
 
-    WebDriver driver;
+    private WebDriver driver;
 
     public CartPage(WebDriver driver) {
         this.driver = driver;

@@ -13,13 +13,14 @@ import java.util.List;
 // для работы с товарами на странице товаров
 public class ProductsPage {
 
-    WebDriver driver;
+    private WebDriver driver;
 
     public ProductsPage(WebDriver driver) {
         this.driver = driver;
     }
 
     //todo: расширить то что мы можем делать с элементом из списка
+    //todo: см. классы CheckoutPage, CartPage
     public List<WebElement> getListItems() {
         return driver.findElements(By.xpath("//div[@class='inventory_item']"));
     }

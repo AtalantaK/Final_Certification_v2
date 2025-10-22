@@ -4,6 +4,7 @@ import com.saucedemo.config.Config;
 import com.saucedemo.pages.Footer;
 import com.saucedemo.pages.LoginPage;
 import com.saucedemo.utils.Constants;
+import com.saucedemo.utils.PageFactory;
 import com.saucedemo.utils.WebDriverUtils;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
@@ -25,10 +26,12 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 public class Login_AT {
 
     private WebDriver driver;
+    private PageFactory pageFactory;
 
     @BeforeEach
     public void setUp() {
         driver = WebDriverUtils.driverSetUp();
+        pageFactory = new PageFactory(driver);
     }
 
     @Test
@@ -38,7 +41,7 @@ public class Login_AT {
     @Description("Успешная авторизация как пользователь = standard_user")
     @Tags({@Tag("Authorization"), @Tag("Smoke"), @Tag("Security_matrix"), @Tag("Positive")})
     public void successfulAuthorization() throws IOException {
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = pageFactory.createLoginPage();
         loginPage.login(Constants.STANDARD_USER, Config.get("PASSWORD"));
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -46,7 +49,7 @@ public class Login_AT {
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("shopping_cart_link"))));
         //wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//a[@class='shopping_cart_link']"))));
 
-        Footer footer = new Footer(driver);
+        Footer footer = pageFactory.createFooter();
         System.out.println(footer.getFooterCopyright());
         System.out.println(footer.getTwitterLink());
         System.out.println(footer.getFacebookLink());
@@ -60,7 +63,7 @@ public class Login_AT {
     @Description("Неуспешная авторизация как пользователь = locked_out_user")
     @Tags({@Tag("Authorization"), @Tag("Smoke"), @Tag("Security_matrix"), @Tag("Negative")})
     public void unsuccessfulAuthorization() throws IOException {
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = pageFactory.createLoginPage();
         loginPage.login(Constants.LOCKED_OUT_USER, Config.get("PASSWORD"));
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));

@@ -11,7 +11,7 @@ import java.io.IOException;
 public class Header {
 
     //todo: методы для работы с верхней плашкой: меню
-    WebDriver driver;
+    private WebDriver driver;
 
     public Header(WebDriver driver) {
         this.driver = driver;

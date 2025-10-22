@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 
 public class Footer {
 
-    WebDriver driver;
+    private WebDriver driver;
 
     public Footer(WebDriver driver) {
         this.driver = driver;

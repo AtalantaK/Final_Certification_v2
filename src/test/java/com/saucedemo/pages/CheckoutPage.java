@@ -11,7 +11,7 @@ import java.util.List;
 
 public class CheckoutPage {
 
-    WebDriver driver;
+    private WebDriver driver;
 
     public CheckoutPage(WebDriver driver) {
         this.driver = driver;

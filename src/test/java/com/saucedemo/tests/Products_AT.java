@@ -3,6 +3,7 @@ package com.saucedemo.tests;
 import com.saucedemo.config.Config;
 import com.saucedemo.pages.*;
 import com.saucedemo.utils.Constants;
+import com.saucedemo.utils.PageFactory;
 import com.saucedemo.utils.SortngMethods;
 import com.saucedemo.utils.WebDriverUtils;
 import org.junit.jupiter.api.*;
@@ -19,11 +20,14 @@ import java.util.List;
 import static com.saucedemo.utils.Products.*;
 
 public class Products_AT {
+
     private WebDriver driver;
+    private PageFactory pageFactory;
 
     @BeforeEach
     public void setUp() {
         driver = WebDriverUtils.driverSetUp();
+        pageFactory = new PageFactory(driver);
     }
 
     //todo: привести в божеский вид
@@ -36,13 +40,13 @@ public class Products_AT {
 //    @Tags({@Tag("Authorization"), @Tag("Smoke"), @Tag("Security_matrix"), @Tag("Positive")})
     public void item() throws IOException {
 
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = pageFactory.createLoginPage();
         loginPage.login(Constants.STANDARD_USER, Config.get("PASSWORD"));
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("shopping_cart_link"))));
 
-        ProductsPage productsPage = new ProductsPage(driver);
+        ProductsPage productsPage = pageFactory.createProductsPage();
         productsPage.addItemToCartByName(item1.getItemName());
         productsPage.removeItemFromCartByName(item1.getItemName());
         System.out.println(productsPage.getItemDescriptionByName(item1.getItemName()));
@@ -50,7 +54,7 @@ public class Products_AT {
         System.out.println(productsPage.getItemImageByName(item1.getItemName()));
 
         productsPage.openItemByName(item2.getItemName());
-        ProductPage productPage = new ProductPage(driver);
+        ProductPage productPage = pageFactory.createProductPage();
         productPage.addItemToCartByName();
         productPage.removeItemFromCartByName();
         System.out.println(productPage.getItemDescription(item2.getItemName()));
@@ -71,22 +75,22 @@ public class Products_AT {
 //    @Tags({@Tag("Authorization"), @Tag("Smoke"), @Tag("Security_matrix"), @Tag("Positive")})
     public void item2() throws IOException {
 
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = pageFactory.createLoginPage();
         loginPage.login(Constants.STANDARD_USER, Config.get("PASSWORD"));
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("shopping_cart_link"))));
 
-        ProductsPage productsPage = new ProductsPage(driver);
+        ProductsPage productsPage = pageFactory.createProductsPage();
         productsPage.addItemToCartByName(item1.getItemName());
         productsPage.addItemToCartByName(item2.getItemName());
 
-        Header header = new Header(driver);
+        Header header = pageFactory.createHeader();
         System.out.println(header.getTextHeaderSecondaryContainer());
         header.openShoppingCart();
         System.out.println(header.getShoppingCartBadge());
 
-        CartPage cartPage = new CartPage(driver);
+        CartPage cartPage = pageFactory.createCartPage();
         System.out.println(header.getTextHeaderSecondaryContainer());
         cartPage.removeItemFromCartByName(item1.getItemName());
         cartPage.clickContinueShopping();
@@ -103,20 +107,20 @@ public class Products_AT {
 //    @Tags({@Tag("Authorization"), @Tag("Smoke"), @Tag("Security_matrix"), @Tag("Positive")})
     public void item3() throws IOException {
 
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = pageFactory.createLoginPage();
         loginPage.login(Constants.STANDARD_USER, Config.get("PASSWORD"));
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.className("shopping_cart_link"))));
 
-        ProductsPage productsPage = new ProductsPage(driver);
+        ProductsPage productsPage = pageFactory.createProductsPage();
         productsPage.addItemToCartByName(item1.getItemName());
         productsPage.addItemToCartByName(item2.getItemName());
 
-        Header header = new Header(driver);
+        Header header = pageFactory.createHeader();
         header.openShoppingCart();
 
-        CartPage cartPage = new CartPage(driver);
+        CartPage cartPage = pageFactory.createCartPage();
         List<WebElement> items = cartPage.getListItems();
         for (WebElement item : items) {
             System.out.println(cartPage.getItemName(item));

@@ -10,6 +10,7 @@ import java.io.IOException;
 
 // для работы с элементами на странице логина
 public class LoginPage {
+
     private WebDriver driver;
 
     private By usernameField = By.id("user-name");

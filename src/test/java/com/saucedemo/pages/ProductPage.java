@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class ProductPage {
 
-    WebDriver driver;
+    private WebDriver driver;
 
     public ProductPage(WebDriver driver) {
         this.driver = driver;
