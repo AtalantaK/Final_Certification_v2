@@ -10,7 +10,6 @@ import java.io.IOException;
 
 public class Header {
 
-    //todo: методы для работы с верхней плашкой: меню
     private WebDriver driver;
 
     public Header(WebDriver driver) {

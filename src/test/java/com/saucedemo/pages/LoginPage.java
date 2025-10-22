@@ -49,8 +49,7 @@ public class LoginPage {
     }
 
     public String getErrorMessageText() {
-        WebElement errorMessage = driver.findElement(By.className("error-message-container"));
-        //WebElement errorMessage = driver.findElement(By.xpath("//div[@class='error-message-container error']"));
+        WebElement errorMessage = driver.findElement(By.xpath("//div[@class='error-message-container error']"));
         return errorMessage.getCssValue("background-color");
     }
 

@@ -19,10 +19,24 @@ public class ProductsPage {
         this.driver = driver;
     }
 
-    //todo: расширить то что мы можем делать с элементом из списка
-    //todo: см. классы CheckoutPage, CartPage
     public List<WebElement> getListItems() {
         return driver.findElements(By.xpath("//div[@class='inventory_item']"));
+    }
+
+    public String getItemName(WebElement item) {
+        return item.findElement(By.xpath(".//div[@data-test='inventory-item-name']")).getText();
+    }
+
+    public String getItemDescription(WebElement item) {
+        return item.findElement(By.xpath(".//div[@data-test='inventory-item-desc']")).getText();
+    }
+
+    public String getItemPrice(WebElement item) {
+        return item.findElement(By.xpath(".//div[@data-test='inventory-item-price']")).getText();
+    }
+
+    public String getImage(WebElement item) {
+        return item.findElement(By.xpath(".//img[@class='inventory_item_img']")).getAttribute("src");
     }
 
     @Step("Добавить товар в корзину по имени с Products страницы")

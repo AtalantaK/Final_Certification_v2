@@ -64,23 +64,23 @@ public class CheckoutPage {
     }
 
     @Step("Ввести 'First Name'")
-    public void enterFirstName() throws IOException {
+    public void enterFirstName(String text) throws IOException {
         WebElement firstName = driver.findElement(By.xpath("//input[@id='first-name']"));
-        firstName.sendKeys("Kseniia");
+        firstName.sendKeys(text);
         ScreenshotUtils.makeScreeshot(driver);
     }
 
     @Step("Ввести 'Last Name'")
-    public void enterLastName() throws IOException {
+    public void enterLastName(String text) throws IOException {
         WebElement lastName = driver.findElement(By.xpath("//input[@id='last-name']"));
-        lastName.sendKeys("Kalashnikova");
+        lastName.sendKeys(text);
         ScreenshotUtils.makeScreeshot(driver);
     }
 
     @Step("Ввести 'Zip/Postal Code'")
-    public void enterPostalCode() throws IOException {
+    public void enterPostalCode(String text) throws IOException {
         WebElement postalCode = driver.findElement(By.xpath("//input[@id='postal-code']"));
-        postalCode.sendKeys("443115");
+        postalCode.sendKeys(text);
         ScreenshotUtils.makeScreeshot(driver);
     }
 

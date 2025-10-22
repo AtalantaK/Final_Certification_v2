@@ -19,6 +19,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.IOException;
 import java.time.Duration;
 
+import static com.saucedemo.utils.Users.user1;
+import static com.saucedemo.utils.Users.user2;
 import static io.qameta.allure.SeverityLevel.BLOCKER;
 import static io.qameta.allure.SeverityLevel.NORMAL;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,7 +46,7 @@ public class Login_AT {
     @Tags({@Tag("Authorization"), @Tag("Smoke"), @Tag("Security_matrix"), @Tag("Positive")})
     public void successfulAuthorization() throws IOException {
         LoginPage loginPage = pageFactory.createLoginPage();
-        loginPage.login(Constants.STANDARD_USER, Config.get("PASSWORD"));
+        loginPage.login(user1.getUserName(), Config.get("PASSWORD"));
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//a[@class='shopping_cart_link']"))));
@@ -58,7 +60,7 @@ public class Login_AT {
     @Tags({@Tag("Authorization"), @Tag("Smoke"), @Tag("Security_matrix"), @Tag("Negative")})
     public void unsuccessfulAuthorization() throws IOException {
         LoginPage loginPage = pageFactory.createLoginPage();
-        loginPage.login(Constants.LOCKED_OUT_USER, Config.get("PASSWORD"));
+        loginPage.login(user2.getUserName(), Config.get("PASSWORD"));
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//h3[text()='Epic sadface: Sorry, this user has been locked out.']"))));
