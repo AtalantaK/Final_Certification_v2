@@ -21,6 +21,7 @@ import java.util.List;
 
 import static com.saucedemo.utils.Products.*;
 import static com.saucedemo.utils.Users.user1;
+import static io.qameta.allure.Allure.step;
 import static io.qameta.allure.SeverityLevel.BLOCKER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -55,12 +56,18 @@ public class E2E_AT {
         productsPage.chooseSortingMethodByIndex(2);
 
         List<WebElement> list = productsPage.getListItems();
-        for (WebElement item : list) {
-            System.out.println(productsPage.getItemName(item));
-            System.out.println(productsPage.getItemDescription(item));
-            System.out.println(productsPage.getItemPrice(item));
-            System.out.println(productsPage.getImage(item));
-        }
+        step("Получение списка продуктов", () -> {
+            for (int i = 0; i < list.size(); i++) {
+                WebElement item = list.get(i);
+                step("Продукт " + (i + 1), () -> {
+                    step("Название продукта: " + productsPage.getItemName(item));
+                    step("Описание продукта: " + productsPage.getItemDescription(item));
+                    step("Стоимость продукта: " + productsPage.getItemPrice(item));
+                    step("Изображение продукта: " + productsPage.getImage(item));
+                });
+            }
+        });
+
 
         productsPage.addItemToCartByName(item1.getItemName());
         productsPage.addItemToCartByName(item3.getItemName());
@@ -91,11 +98,11 @@ public class E2E_AT {
 
         checkoutPage.clickBackHome();
 
-        assertAll("Несколько проверок",
+        step("Проверки в конце кейса", () -> assertAll("Несколько проверок",
                 () -> assertThat(actualShoppingCartBadge).isEqualTo(Constants.EXPECTED_SHOPPING_CART_BADGE),
                 () -> assertThat(actualTotal).isEqualTo(Constants.EXPECTED_TOTAL),
                 () -> assertThat(actualHeader).isEqualTo(Constants.EXPECTED_HEADER),
-                () -> assertThat(actualText).isEqualTo(Constants.EXPECTED_TEXT));
+                () -> assertThat(actualText).isEqualTo(Constants.EXPECTED_TEXT)));
     }
 
     @AfterEach

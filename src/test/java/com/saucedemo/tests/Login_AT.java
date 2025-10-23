@@ -21,6 +21,7 @@ import java.time.Duration;
 
 import static com.saucedemo.utils.Users.user1;
 import static com.saucedemo.utils.Users.user2;
+import static io.qameta.allure.Allure.step;
 import static io.qameta.allure.SeverityLevel.BLOCKER;
 import static io.qameta.allure.SeverityLevel.NORMAL;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -69,10 +70,10 @@ public class Login_AT {
         String actualBorderUsername = loginPage.getBorderUsername();
         String actualBorderPassword = loginPage.getBorderPassword();
 
-        assertAll("Несколько проверок",
+        step("Проверки в конце кейса", () -> assertAll("Несколько проверок",
                 () -> assertThat(actualBackgroundErrorMessage).isEqualTo(Constants.BACKGROUND_COLOR),
                 () -> assertThat(actualBorderUsername).isEqualTo(Constants.BACKGROUND_COLOR),
-                () -> assertThat(actualBorderPassword).isEqualTo(Constants.BACKGROUND_COLOR));
+                () -> assertThat(actualBorderPassword).isEqualTo(Constants.BACKGROUND_COLOR)));
     }
 
     @AfterEach
