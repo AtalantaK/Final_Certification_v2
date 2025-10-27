@@ -1,4 +1,4 @@
-package API.helpers;
+package API.services;
 
 import API.base.Authorization;
 import API.models.EmployeeRequest;
@@ -9,7 +9,7 @@ import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
 
-public class UsefulMethodsAPI {
+public class EmployeeMethodsAPI {
 
     public static Response createEmployeeAPI(String city, String name, String position, String surname) {
 

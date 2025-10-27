@@ -1,6 +1,6 @@
 package API.tests.tests.ContractAT;
 
-import API.helpers.UsefulMethodsDB;
+import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
 import API.utils.Endpoints;
@@ -28,7 +28,7 @@ public class GetEmployeeByName {
     public void checkResponseCodeTest() {
 
         EmployeeRequest employeeRequest = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
-        int employeeId = UsefulMethodsDB.createEmployeeDB(employeeRequest);
+        int employeeId = UserRepository.createEmployeeDB(employeeRequest);
 
         given().baseUri(Endpoints.URI).
                 log().all().
@@ -36,7 +36,7 @@ public class GetEmployeeByName {
                 then().statusCode(200);
 
         EmployeeResponse employeeResponse = new EmployeeResponse(employeeRequest.getCity(),employeeId, employeeRequest.getName(),employeeRequest.getPosition(),employeeRequest.getSurname());
-        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
+        UserRepository.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class GetEmployeeByName {
     public void checkResponseBodyTest() {
 
         EmployeeRequest employeeRequest = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
-        UsefulMethodsDB.createEmployeeDB(employeeRequest);
+        UserRepository.createEmployeeDB(employeeRequest);
 
         EmployeeResponse employeeResponse = given().baseUri(Endpoints.URI).
                 log().all().
@@ -53,7 +53,7 @@ public class GetEmployeeByName {
 
         assertThat(employeeResponse.getName()).isEqualTo(employeeRequest.getName());
 
-        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
+        UserRepository.deleteEmployeeDB(employeeResponse);
     }
 
     @Test

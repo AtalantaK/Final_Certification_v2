@@ -1,20 +1,11 @@
 package API.base;
 
 import API.config.Config;
-import API.helpers.EnvHelper;
 import API.utils.Endpoints;
 import API.models.User;
-import API.utils.MyPUI;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.spi.PersistenceUnitInfo;
-import org.hibernate.jpa.HibernatePersistenceProvider;
 
-import java.io.IOException;
-import java.util.Properties;
-
-import static API.config.Config.properties;
 import static io.restassured.RestAssured.given;
 
 public class Authorization {

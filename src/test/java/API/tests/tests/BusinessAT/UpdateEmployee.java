@@ -1,7 +1,7 @@
 package API.tests.tests.BusinessAT;
 
-import API.helpers.UsefulMethodsAPI;
-import API.helpers.UsefulMethodsDB;
+import API.services.EmployeeMethodsAPI;
+import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
 import API.utils.ServerUp;
@@ -36,16 +36,16 @@ public class UpdateEmployee {
         EmployeeRequest employee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
 
         //Вставляем сотрудника в БД
-        int employeeId = UsefulMethodsDB.createEmployeeDB(employee);
+        int employeeId = UserRepository.createEmployeeDB(employee);
 
         //Обновляем сотрудника через API
-        UsefulMethodsAPI.updateEmployeeCompletelyAPI(employeeId, "Moscow", "Xenia", "AQA", "Ivanova");
+        EmployeeMethodsAPI.updateEmployeeCompletelyAPI(employeeId, "Moscow", "Xenia", "AQA", "Ivanova");
         EmployeeResponse employeeResponse = new EmployeeResponse("Moscow", employeeId, "Xenia", "AQA", "Ivanova");
 
         //Ищем в БД нашего обновленного сотрудника
-        EmployeeResponse employeeDB = UsefulMethodsDB.getEmployeeDB(employeeId);
+        EmployeeResponse employeeDB = UserRepository.getEmployeeDB(employeeId);
 
-        UsefulMethodsDB.deleteEmployeeDB(employeeDB);
+        UserRepository.deleteEmployeeDB(employeeDB);
 
         assertThat(employeeResponse).isEqualTo(employeeDB);
 
@@ -63,16 +63,16 @@ public class UpdateEmployee {
         EmployeeRequest employee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
 
         //Вставляем сотрудника в БД
-        int employeeId = UsefulMethodsDB.createEmployeeDB(employee);
+        int employeeId = UserRepository.createEmployeeDB(employee);
 
         //Обновляем сотрудника через API
-        UsefulMethodsAPI.updateEmployeeCityPositionAPI(employeeId, "Moscow", "AQA");
+        EmployeeMethodsAPI.updateEmployeeCityPositionAPI(employeeId, "Moscow", "AQA");
         EmployeeResponse employeeResponse = new EmployeeResponse("Moscow", employeeId, "Kseniia", "AQA", "Kalashnikova");
 
         //Ищем в БД нашего обновленного сотрудника
-        EmployeeResponse employeeDB = UsefulMethodsDB.getEmployeeDB(employeeId);
+        EmployeeResponse employeeDB = UserRepository.getEmployeeDB(employeeId);
 
-        UsefulMethodsDB.deleteEmployeeDB(employeeDB);
+        UserRepository.deleteEmployeeDB(employeeDB);
 
         assertThat(employeeResponse).isEqualTo(employeeDB);
 

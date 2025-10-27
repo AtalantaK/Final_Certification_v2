@@ -1,5 +1,6 @@
-package API.helpers;
+package API.repositories;
 
+import API.utils.EnvHelper;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
 import API.utils.MyPUI;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
-public class UsefulMethodsDB {
+public class UserRepository {
 
     private static EntityManager entityManager;
     private static EnvHelper envHelper;

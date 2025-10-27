@@ -1,7 +1,8 @@
 package API.tests.tests.ContractAT;
 
 import API.base.Authorization;
-import API.helpers.UsefulMethodsDB;
+import API.base.BaseTest;
+import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
 import API.models.ErrorResponse;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.devtools.v138.backgroundservice.BackgroundService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,21 +25,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @DisplayName("Contract AT. Создание нового сотрудника")
-public class CreateEmployee {
-
-    @BeforeAll
-    public static void setUp() {
-        ServerUp.isServerUp();
-        RestAssured.useRelaxedHTTPSValidation();
-    }
+public class CreateEmployee extends BaseTest {
 
     @Test
     @DisplayName("Проверить код ответа")
     public void checkResponseCodeTest() {
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Ivan").position("QA").surname("Ivanov").build();
-        String token = Authorization.getToken();
 
-        int id = given().baseUri(Endpoints.URI).
+        int id = given().
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
@@ -45,19 +40,16 @@ public class CreateEmployee {
                 then().statusCode(201).
                 extract().path("id");
 
-        EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(),id, requestJSON.getName(),requestJSON.getPosition(),requestJSON.getSurname());
-        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
-
-//        UsefulMethodsAPI.deleteEmployeeAPI(id);
+        EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), id, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
+        UserRepository.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
     @DisplayName("Проверить тело ответа")
     public void checkResponseBodyTest() {
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Ivan").position("QA").surname("Ivanov").build();
-        String token = Authorization.getToken();
 
-        int id = given().baseUri(Endpoints.URI).
+        int id = given().
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
@@ -67,9 +59,8 @@ public class CreateEmployee {
                 body("message", is("Employee created successfully")).
                 extract().path("id");
 
-        EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(),id, requestJSON.getName(),requestJSON.getPosition(),requestJSON.getSurname());
-        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
-//        UsefulMethodsAPI.deleteEmployeeAPI(id);
+        EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), id, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
+        UserRepository.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
@@ -77,9 +68,8 @@ public class CreateEmployee {
     @Disabled("Есть актуальный баг")
     public void createEmployeeWithoutCityTest() {
         EmployeeRequest requestJSON = EmployeeRequest.builder().name("Ivan").position("QA").surname("Ivanov").build();
-        String token = Authorization.getToken();
 
-        Response response = given().baseUri(Endpoints.URI).
+        Response response = given().
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
@@ -89,18 +79,16 @@ public class CreateEmployee {
 
         int id = response.path("id");
 
-        EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(),id, requestJSON.getName(),requestJSON.getPosition(),requestJSON.getSurname());
-        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
-//        UsefulMethodsAPI.deleteEmployeeAPI(id);
+        EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), id, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
+        UserRepository.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
     @DisplayName("Создать сотрудника без name")
     public void createEmployeeWithoutNameTest() {
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").position("QA").surname("Ivanov").build();
-        String token = Authorization.getToken();
 
-        ErrorResponse actualErrorResponse = given().baseUri(Endpoints.URI).
+        ErrorResponse actualErrorResponse = given().
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().
@@ -119,9 +107,8 @@ public class CreateEmployee {
     @DisplayName("Создать сотрудника без surname и position")
     public void createEmployeeWithoutSurnamePositionTest() {
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Ivan").build();
-        String token = Authorization.getToken();
 
-        ErrorResponse actualErrorResponse = given().baseUri(Endpoints.URI).
+        ErrorResponse actualErrorResponse = given().
                 body(requestJSON).contentType(ContentType.JSON).
                 auth().oauth2(token).
                 log().all().

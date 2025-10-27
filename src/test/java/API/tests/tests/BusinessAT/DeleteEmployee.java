@@ -1,7 +1,7 @@
 package API.tests.tests.BusinessAT;
 
-import API.helpers.UsefulMethodsAPI;
-import API.helpers.UsefulMethodsDB;
+import API.services.EmployeeMethodsAPI;
+import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
 import API.utils.ServerUp;
@@ -36,12 +36,12 @@ public class DeleteEmployee {
         EmployeeRequest expectedEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("QA").surname("Kalashnikova").build();
 
         //Вставляем сотрудника в БД
-        int employeeId = UsefulMethodsDB.createEmployeeDB(expectedEmployee);
+        int employeeId = UserRepository.createEmployeeDB(expectedEmployee);
 
-        UsefulMethodsAPI.deleteEmployeeAPI(employeeId);
+        EmployeeMethodsAPI.deleteEmployeeAPI(employeeId);
 
         //Ищем в БД нашего удалённого сотрудника
-        EmployeeResponse actualEmployee = UsefulMethodsDB.getEmployeeDB(employeeId);
+        EmployeeResponse actualEmployee = UserRepository.getEmployeeDB(employeeId);
 
         assertThat(actualEmployee).isNull();
     }

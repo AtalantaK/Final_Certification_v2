@@ -1,6 +1,6 @@
 package API.tests.tests.ContractAT;
 
-import API.helpers.UsefulMethodsDB;
+import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.utils.Endpoints;
 import API.utils.ServerUp;
@@ -27,7 +27,7 @@ public class DeleteEmployee {
     public void checkResponseCodeTest() {
 
         EmployeeRequest employeeRequest = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
-        int employeeId = UsefulMethodsDB.createEmployeeDB(employeeRequest);
+        int employeeId = UserRepository.createEmployeeDB(employeeRequest);
 
         given().baseUri(Endpoints.URI).
                 log().all().
@@ -41,7 +41,7 @@ public class DeleteEmployee {
     public void checkResponseBodyTest() {
 
         EmployeeRequest employeeRequest = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
-        int employeeId = UsefulMethodsDB.createEmployeeDB(employeeRequest);
+        int employeeId = UserRepository.createEmployeeDB(employeeRequest);
 
         given().baseUri(Endpoints.URI).
                 log().all().

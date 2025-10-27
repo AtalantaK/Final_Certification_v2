@@ -1,14 +1,13 @@
 package API.tests.tests.BusinessAT;
 
-import API.helpers.UsefulMethodsAPI;
-import API.helpers.UsefulMethodsDB;
+import API.services.EmployeeMethodsAPI;
+import API.repositories.UserRepository;
 import API.models.EmployeeResponse;
 import API.utils.ServerUp;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
-import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -33,13 +32,13 @@ public class CreateEmployee {
     public void createEmployee() {
 
         //Создаем сотрудника через API
-        int employeeId = UsefulMethodsAPI.createEmployeeAPI("Samara", "Kseniia", "AQA", "Kalashnikova").path("id");
+        int employeeId = EmployeeMethodsAPI.createEmployeeAPI("Samara", "Kseniia", "AQA", "Kalashnikova").path("id");
         EmployeeResponse employeeResponse = new EmployeeResponse("Samara", employeeId, "Kseniia", "AQA", "Kalashnikova");
 
         //Ищем в БД нашего созданного сотрудника
-        EmployeeResponse employeeDB = UsefulMethodsDB.getEmployeeDB(employeeId);
+        EmployeeResponse employeeDB = UserRepository.getEmployeeDB(employeeId);
 
-        UsefulMethodsDB.deleteEmployeeDB(employeeDB);
+        UserRepository.deleteEmployeeDB(employeeDB);
 
         assertThat(employeeResponse).isEqualTo(employeeDB);
     }

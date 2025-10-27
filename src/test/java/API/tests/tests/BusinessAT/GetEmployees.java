@@ -1,7 +1,7 @@
 package API.tests.tests.BusinessAT;
 
-import API.helpers.UsefulMethodsAPI;
-import API.helpers.UsefulMethodsDB;
+import API.services.EmployeeMethodsAPI;
+import API.repositories.UserRepository;
 import API.models.EmployeeResponse;
 import API.utils.ServerUp;
 import io.qameta.allure.Description;
@@ -34,12 +34,11 @@ public class GetEmployees {
     public void getEmployees() {
 
         //Получаем всех сотрудников через API
-        List<EmployeeResponse> employeesResponse = UsefulMethodsAPI.getEmployeesAPI().jsonPath().getList(".", EmployeeResponse.class);
+        List<EmployeeResponse> employeesResponse = EmployeeMethodsAPI.getEmployeesAPI().jsonPath().getList(".", EmployeeResponse.class);
 
         //Ищем в БД наших сотрудников
-        List<EmployeeResponse> employeesDB = UsefulMethodsDB.getEmployeesDB();
+        List<EmployeeResponse> employeesDB = UserRepository.getEmployeesDB();
 
         assertThat(employeesResponse).isEqualTo(employeesDB);
-
     }
 }

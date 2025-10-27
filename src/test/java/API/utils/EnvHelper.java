@@ -1,4 +1,4 @@
-package API.helpers;
+package API.utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;

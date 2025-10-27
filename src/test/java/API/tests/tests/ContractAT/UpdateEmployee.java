@@ -1,7 +1,7 @@
 package API.tests.tests.ContractAT;
 
 import API.base.Authorization;
-import API.helpers.UsefulMethodsDB;
+import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
 import API.models.ResponseMessage;
@@ -36,7 +36,7 @@ public class UpdateEmployee {
     public void checkResponseCodeTest() {
 
         EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
-        int employeeId = UsefulMethodsDB.createEmployeeDB(initialEmployee);
+        int employeeId = UserRepository.createEmployeeDB(initialEmployee);
 
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Xenia").position("AQA").surname("Ivanova").build();
 
@@ -51,7 +51,7 @@ public class UpdateEmployee {
 
 
         EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), employeeId, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
-        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
+        UserRepository.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class UpdateEmployee {
     public void checkResponseBodyTest() {
 
         EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
-        int employeeId = UsefulMethodsDB.createEmployeeDB(initialEmployee);
+        int employeeId = UserRepository.createEmployeeDB(initialEmployee);
 
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Xenia").position("Senior QA").surname("Ivanova").build();
         String token = Authorization.getToken();
@@ -76,7 +76,7 @@ public class UpdateEmployee {
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
         EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), employeeId, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
-        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
+        UserRepository.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class UpdateEmployee {
     public void validationErrorTest() {
 
         EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
-        int employeeId = UsefulMethodsDB.createEmployeeDB(initialEmployee);
+        int employeeId = UserRepository.createEmployeeDB(initialEmployee);
 
         String requestJSON = "{\n" +
                 "    \"city\": 123,\n" +
@@ -115,7 +115,7 @@ public class UpdateEmployee {
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
         EmployeeResponse employeeResponse = new EmployeeResponse(initialEmployee.getCity(), employeeId, initialEmployee.getName(), initialEmployee.getPosition(), initialEmployee.getSurname());
-        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
+        UserRepository.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
@@ -140,7 +140,7 @@ public class UpdateEmployee {
     public void updateCityTest() {
 
         EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
-        int employeeId = UsefulMethodsDB.createEmployeeDB(initialEmployee);
+        int employeeId = UserRepository.createEmployeeDB(initialEmployee);
 
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").build();
         String token = Authorization.getToken();
@@ -157,7 +157,7 @@ public class UpdateEmployee {
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
         EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), employeeId, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
-        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
+        UserRepository.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
@@ -165,7 +165,7 @@ public class UpdateEmployee {
     public void updateNameTest() {
 
         EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
-        int employeeId = UsefulMethodsDB.createEmployeeDB(initialEmployee);
+        int employeeId = UserRepository.createEmployeeDB(initialEmployee);
 
         EmployeeRequest requestJSON = EmployeeRequest.builder().name("Ivan").build();
         String token = Authorization.getToken();
@@ -182,7 +182,7 @@ public class UpdateEmployee {
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
         EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), employeeId, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
-        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
+        UserRepository.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
@@ -190,7 +190,7 @@ public class UpdateEmployee {
     public void updatePositionTest() {
 
         EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
-        int employeeId = UsefulMethodsDB.createEmployeeDB(initialEmployee);
+        int employeeId = UserRepository.createEmployeeDB(initialEmployee);
 
         EmployeeRequest requestJSON = EmployeeRequest.builder().position("AQA").build();
         String token = Authorization.getToken();
@@ -207,7 +207,7 @@ public class UpdateEmployee {
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
         EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), employeeId, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
-        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
+        UserRepository.deleteEmployeeDB(employeeResponse);
     }
 
     @Test
@@ -215,7 +215,7 @@ public class UpdateEmployee {
     public void updateSurnameTest() {
 
         EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
-        int employeeId = UsefulMethodsDB.createEmployeeDB(initialEmployee);
+        int employeeId = UserRepository.createEmployeeDB(initialEmployee);
 
         EmployeeRequest requestJSON = EmployeeRequest.builder().surname("Ivanova").build();
         String token = Authorization.getToken();
@@ -232,6 +232,6 @@ public class UpdateEmployee {
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
         EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), employeeId, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
-        UsefulMethodsDB.deleteEmployeeDB(employeeResponse);
+        UserRepository.deleteEmployeeDB(employeeResponse);
     }
 }
