@@ -4,6 +4,18 @@
 //todo: добавить github actions и публикация репорта
 
 API тесты
-- пока просто скопировала код с прошлой АПИ промежутки!
 //todo: посмотреть покрытие всех АПИшек
 //todo: не забываем про config файл
+//todo: вынести апи в методы?! чтобы юзер не писал сами given. и т.п
+
+без Local и Global:
+CreateEmployee - отдельно работает
+DeleteEmployee - отдельно работает
+GetEmployeeByID - отдельно работает
+GetEmployeeByName - отдельно работает
+GetEmployees - отдельно работает
+UpdateEmployee - отдельно работает
+
+файл environment.properties загружать в папку после того как тесты пробежали
+
+//todo: вынести авторизацию в BaseTest

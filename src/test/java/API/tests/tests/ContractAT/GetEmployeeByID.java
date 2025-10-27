@@ -1,5 +1,6 @@
 package API.tests.tests.ContractAT;
 
+import API.base.BaseTest;
 import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
@@ -15,13 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @DisplayName("Contract AT. Получить сотрудника по ID")
-public class GetEmployeeByID {
-
-    @BeforeAll
-    public static void setUp() {
-        ServerUp.isServerUp();
-        RestAssured.useRelaxedHTTPSValidation();
-    }
+public class GetEmployeeByID extends BaseTest {
 
     @Test
     @DisplayName("Проверить код ответа")
@@ -30,8 +25,7 @@ public class GetEmployeeByID {
         EmployeeRequest employeeRequest = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
         int employeeId = UserRepository.createEmployeeDB(employeeRequest);
 
-        given().baseUri(Endpoints.URI).
-                log().all().
+        given(requestSpecification).
                 when().get(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().statusCode(200);
 
@@ -48,8 +42,7 @@ public class GetEmployeeByID {
 
         EmployeeResponse expectedEmployeeResponse = new EmployeeResponse("Samara", employeeId, "Kseniia", "Senior QA", "Kalashnikova");
 
-        EmployeeResponse actualEmployeeResponse = given().baseUri(Endpoints.URI).
-                log().all().
+        EmployeeResponse actualEmployeeResponse = given(requestSpecification).
                 when().get(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().extract().as(EmployeeResponse.class);
 
@@ -64,7 +57,7 @@ public class GetEmployeeByID {
 
         int employeeId = 12345678;
 
-        given().baseUri(Endpoints.URI).
+        given(requestSpecification).
                 when().get(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().statusCode(404).
                 body("error", is("Employee with id '" + employeeId + "' not found"));

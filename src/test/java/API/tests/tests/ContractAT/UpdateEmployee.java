@@ -1,6 +1,7 @@
 package API.tests.tests.ContractAT;
 
 import API.base.Authorization;
+import API.base.BaseTest;
 import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
@@ -22,14 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @DisplayName("Обновить информацию о сотруднике")
-public class UpdateEmployee {
-//    private static final Log log = LogFactory.getLog(UpdateEmployee.class);
-
-    @BeforeAll
-    public static void setUp() {
-        ServerUp.isServerUp();
-        RestAssured.useRelaxedHTTPSValidation();
-    }
+public class UpdateEmployee extends BaseTest {
 
     @Test
     @DisplayName("Проверить код ответа")
@@ -42,13 +36,11 @@ public class UpdateEmployee {
 
         String token = Authorization.getToken();
 
-        given().baseUri(Endpoints.URI).
-                body(requestJSON).contentType(ContentType.JSON).
+        given(requestSpecification).
+                body(requestJSON).
                 auth().oauth2(token).
-                log().all().
                 when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().statusCode(200);
-
 
         EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), employeeId, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
         UserRepository.deleteEmployeeDB(employeeResponse);
@@ -66,10 +58,9 @@ public class UpdateEmployee {
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = given().baseUri(Endpoints.URI).
-                body(requestJSON).contentType(ContentType.JSON).
+        ResponseMessage actualResponseMessage = given(requestSpecification).
+                body(requestJSON).
                 auth().oauth2(token).
-                log().all().
                 when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().extract().as(ResponseMessage.class);
 
@@ -103,10 +94,9 @@ public class UpdateEmployee {
 
         ValidationErrorResponse expectedResponseMessage = new ValidationErrorResponse("Invalid field types", "All fields must be strings", wrongTypeFields);
 
-        ValidationErrorResponse actualResponseMessage = given().baseUri(Endpoints.URI).
-                body(requestJSON).contentType(ContentType.JSON).
+        ValidationErrorResponse actualResponseMessage = given(requestSpecification).
+                body(requestJSON).
                 auth().oauth2(token).
-                log().all().
                 when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().
                 statusCode(400).
@@ -127,10 +117,9 @@ public class UpdateEmployee {
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Kseniia").position("AQA").surname("Kalashnikova").build();
         String token = Authorization.getToken();
 
-        given().baseUri(Endpoints.URI).
-                body(requestJSON).contentType(ContentType.JSON).
+        given(requestSpecification).
+                body(requestJSON).
                 auth().oauth2(token).
-                log().all().
                 when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().statusCode(404).body("error", is("Employee with id '" + employeeId + "' not found"));
     }
@@ -147,10 +136,9 @@ public class UpdateEmployee {
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = given().baseUri(Endpoints.URI).
-                body(requestJSON).contentType(ContentType.JSON).
+        ResponseMessage actualResponseMessage = given(requestSpecification).
+                body(requestJSON).
                 auth().oauth2(token).
-                log().all().
                 when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().extract().as(ResponseMessage.class);
 
@@ -172,10 +160,9 @@ public class UpdateEmployee {
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = given().baseUri(Endpoints.URI).
-                body(requestJSON).contentType(ContentType.JSON).
+        ResponseMessage actualResponseMessage = given(requestSpecification).
+                body(requestJSON).
                 auth().oauth2(token).
-                log().all().
                 when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().extract().as(ResponseMessage.class);
 
@@ -197,10 +184,9 @@ public class UpdateEmployee {
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = given().baseUri(Endpoints.URI).
-                body(requestJSON).contentType(ContentType.JSON).
+        ResponseMessage actualResponseMessage = given(requestSpecification).
+                body(requestJSON).
                 auth().oauth2(token).
-                log().all().
                 when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().extract().as(ResponseMessage.class);
 
@@ -222,10 +208,9 @@ public class UpdateEmployee {
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = given().baseUri(Endpoints.URI).
-                body(requestJSON).contentType(ContentType.JSON).
+        ResponseMessage actualResponseMessage = given(requestSpecification).
+                body(requestJSON).
                 auth().oauth2(token).
-                log().all().
                 when().put(Endpoints.EMPLOYEE + "/" + employeeId).
                 then().extract().as(ResponseMessage.class);
 

@@ -1,5 +1,6 @@
 package API.tests.tests.ContractAT;
 
+import API.base.BaseTest;
 import API.utils.Endpoints;
 import API.utils.ServerUp;
 import io.qameta.allure.Description;
@@ -14,13 +15,7 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 
 @DisplayName("Contract AT. Получение списка всех сотрудников")
-public class GetEmployees {
-
-    @BeforeAll
-    public static void setUp() {
-        ServerUp.isServerUp();
-        RestAssured.useRelaxedHTTPSValidation();
-    }
+public class GetEmployees extends BaseTest {
 
     @Test
     @Story("Получение списка сотрудников")
@@ -29,10 +24,8 @@ public class GetEmployees {
     @DisplayName("Проверить код ответа")
     public void checkResponseCodeTest() {
 
-        given().baseUri(Endpoints.URI).
-                log().all().
+        given(requestSpecification).
                 when().get(Endpoints.EMPLOYEES).
-                then().statusCode(200).
-                log().all();
+                then().statusCode(200);
     }
 }

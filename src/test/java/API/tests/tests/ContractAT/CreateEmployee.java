@@ -1,21 +1,16 @@
 package API.tests.tests.ContractAT;
 
-import API.base.Authorization;
 import API.base.BaseTest;
 import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
 import API.models.ErrorResponse;
 import API.utils.Endpoints;
-import API.utils.ServerUp;
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.devtools.v138.backgroundservice.BackgroundService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +27,9 @@ public class CreateEmployee extends BaseTest {
     public void checkResponseCodeTest() {
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Ivan").position("QA").surname("Ivanov").build();
 
-        int id = given().
-                body(requestJSON).contentType(ContentType.JSON).
+        int id = given(requestSpecification).
+                body(requestJSON).
                 auth().oauth2(token).
-                log().all().
                 when().post(Endpoints.EMPLOYEE).
                 then().statusCode(201).
                 extract().path("id");
@@ -49,10 +43,9 @@ public class CreateEmployee extends BaseTest {
     public void checkResponseBodyTest() {
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Ivan").position("QA").surname("Ivanov").build();
 
-        int id = given().
-                body(requestJSON).contentType(ContentType.JSON).
+        int id = given(requestSpecification).
+                body(requestJSON).
                 auth().oauth2(token).
-                log().all().
                 when().post(Endpoints.EMPLOYEE).
                 then().
                 body("id", is(not(blankString()))).
@@ -69,10 +62,9 @@ public class CreateEmployee extends BaseTest {
     public void createEmployeeWithoutCityTest() {
         EmployeeRequest requestJSON = EmployeeRequest.builder().name("Ivan").position("QA").surname("Ivanov").build();
 
-        Response response = given().
-                body(requestJSON).contentType(ContentType.JSON).
+        Response response = given(requestSpecification).
+                body(requestJSON).
                 auth().oauth2(token).
-                log().all().
                 when().post(Endpoints.EMPLOYEE);
 
         System.out.println(response.prettyPrint());
@@ -88,10 +80,9 @@ public class CreateEmployee extends BaseTest {
     public void createEmployeeWithoutNameTest() {
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").position("QA").surname("Ivanov").build();
 
-        ErrorResponse actualErrorResponse = given().
-                body(requestJSON).contentType(ContentType.JSON).
+        ErrorResponse actualErrorResponse = given(requestSpecification).
+                body(requestJSON).
                 auth().oauth2(token).
-                log().all().
                 when().post(Endpoints.EMPLOYEE).
                 then().
                 extract().as(ErrorResponse.class);
@@ -108,10 +99,9 @@ public class CreateEmployee extends BaseTest {
     public void createEmployeeWithoutSurnamePositionTest() {
         EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Ivan").build();
 
-        ErrorResponse actualErrorResponse = given().
-                body(requestJSON).contentType(ContentType.JSON).
+        ErrorResponse actualErrorResponse = given(requestSpecification).
+                body(requestJSON).
                 auth().oauth2(token).
-                log().all().
                 when().post(Endpoints.EMPLOYEE).
                 then().
                 extract().as(ErrorResponse.class);

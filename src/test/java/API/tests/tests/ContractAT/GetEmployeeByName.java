@@ -1,5 +1,6 @@
 package API.tests.tests.ContractAT;
 
+import API.base.BaseTest;
 import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
@@ -15,13 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @DisplayName("Contract AT. Получить сотрудника по имени")
-public class GetEmployeeByName {
-
-    @BeforeAll
-    public static void setUp() {
-        ServerUp.isServerUp();
-        RestAssured.useRelaxedHTTPSValidation();
-    }
+public class GetEmployeeByName extends BaseTest {
 
     @Test
     @DisplayName("Проверить код ответа")
@@ -30,8 +25,7 @@ public class GetEmployeeByName {
         EmployeeRequest employeeRequest = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
         int employeeId = UserRepository.createEmployeeDB(employeeRequest);
 
-        given().baseUri(Endpoints.URI).
-                log().all().
+        given(requestSpecification).
                 when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeRequest.getName()).
                 then().statusCode(200);
 
@@ -46,8 +40,7 @@ public class GetEmployeeByName {
         EmployeeRequest employeeRequest = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
         UserRepository.createEmployeeDB(employeeRequest);
 
-        EmployeeResponse employeeResponse = given().baseUri(Endpoints.URI).
-                log().all().
+        EmployeeResponse employeeResponse = given(requestSpecification).
                 when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeRequest.getName()).
                 then().extract().as(EmployeeResponse.class);
 
@@ -62,7 +55,7 @@ public class GetEmployeeByName {
 
         String employeeName = "TestKseniiaForAT";
 
-        given().baseUri(Endpoints.URI).
+        given(requestSpecification).
                 when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeName).
                 then().statusCode(404).
                 body("error", is("Employee with name '" + employeeName + "' not found"));
