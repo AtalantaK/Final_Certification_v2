@@ -1,5 +1,6 @@
 package API.tests.tests.ContractAT;
 
+import API.api.UpdateEmployeeAPI;
 import API.base.Authorization;
 import API.base.BaseTest;
 import API.repositories.UserRepository;
@@ -8,6 +9,7 @@ import API.models.EmployeeResponse;
 import API.models.ResponseMessage;
 import API.models.ValidationErrorResponse;
 import API.utils.Endpoints;
+import API.utils.RequestFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -25,17 +27,12 @@ public class UpdateEmployeeAT extends BaseTest {
     @DisplayName("Проверить код ответа")
     public void checkResponseCodeTest() {
 
-        EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        EmployeeRequest initialEmployee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
         int employeeId = UserRepository.createEmployeeDB(initialEmployee);
 
-        EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Xenia").position("AQA").surname("Ivanova").build();
+        EmployeeRequest requestJSON = RequestFactory.createEmployeeRequest("Moscow", "Xenia", "AQA", "Ivanova");
 
-        String token = Authorization.getToken();
-
-        given(requestSpecification).
-                body(requestJSON).
-                auth().oauth2(token).
-                when().put(Endpoints.EMPLOYEE + "/" + employeeId).
+        UpdateEmployeeAPI.getResponse(employeeId, requestJSON).
                 then().statusCode(200);
 
         EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), employeeId, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
@@ -46,18 +43,14 @@ public class UpdateEmployeeAT extends BaseTest {
     @DisplayName("Проверить тело ответа")
     public void checkResponseBodyTest() {
 
-        EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        EmployeeRequest initialEmployee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
         int employeeId = UserRepository.createEmployeeDB(initialEmployee);
 
-        EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Xenia").position("Senior QA").surname("Ivanova").build();
-        String token = Authorization.getToken();
+        EmployeeRequest requestJSON = RequestFactory.createEmployeeRequest("Moscow", "Xenia", "Senior QA", "Ivanova");
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = given(requestSpecification).
-                body(requestJSON).
-                auth().oauth2(token).
-                when().put(Endpoints.EMPLOYEE + "/" + employeeId).
+        ResponseMessage actualResponseMessage = UpdateEmployeeAPI.getResponse(employeeId, requestJSON).
                 then().extract().as(ResponseMessage.class);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
@@ -70,7 +63,7 @@ public class UpdateEmployeeAT extends BaseTest {
     @DisplayName("Ошибка валидации данных")
     public void validationErrorTest() {
 
-        EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        EmployeeRequest initialEmployee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
         int employeeId = UserRepository.createEmployeeDB(initialEmployee);
 
         String requestJSON = "{\n" +
@@ -90,6 +83,7 @@ public class UpdateEmployeeAT extends BaseTest {
 
         ValidationErrorResponse expectedResponseMessage = new ValidationErrorResponse("Invalid field types", "All fields must be strings", wrongTypeFields);
 
+        //todo: тут getResponse не подходит потому что реквест ввиде строки - переделать!
         ValidationErrorResponse actualResponseMessage = given(requestSpecification).
                 body(requestJSON).
                 auth().oauth2(token).
@@ -110,13 +104,9 @@ public class UpdateEmployeeAT extends BaseTest {
 
         int employeeId = 123456789;
 
-        EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Kseniia").position("AQA").surname("Kalashnikova").build();
-        String token = Authorization.getToken();
+        EmployeeRequest requestJSON = RequestFactory.createEmployeeRequest("Moscow", "Kseniia", "AQA", "Kalashnikova");
 
-        given(requestSpecification).
-                body(requestJSON).
-                auth().oauth2(token).
-                when().put(Endpoints.EMPLOYEE + "/" + employeeId).
+        UpdateEmployeeAPI.getResponse(employeeId, requestJSON).
                 then().statusCode(404).body("error", is("Employee with id '" + employeeId + "' not found"));
     }
 
@@ -124,18 +114,14 @@ public class UpdateEmployeeAT extends BaseTest {
     @DisplayName("Обновить только Город")
     public void updateCityTest() {
 
-        EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        EmployeeRequest initialEmployee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
         int employeeId = UserRepository.createEmployeeDB(initialEmployee);
 
-        EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").build();
-        String token = Authorization.getToken();
+        EmployeeRequest requestJSON = RequestFactory.createEmployeeOnlyCity("Moscow");
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = given(requestSpecification).
-                body(requestJSON).
-                auth().oauth2(token).
-                when().put(Endpoints.EMPLOYEE + "/" + employeeId).
+        ResponseMessage actualResponseMessage = UpdateEmployeeAPI.getResponse(employeeId, requestJSON).
                 then().extract().as(ResponseMessage.class);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
@@ -148,18 +134,14 @@ public class UpdateEmployeeAT extends BaseTest {
     @DisplayName("Обновить только Имя")
     public void updateNameTest() {
 
-        EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        EmployeeRequest initialEmployee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
         int employeeId = UserRepository.createEmployeeDB(initialEmployee);
 
-        EmployeeRequest requestJSON = EmployeeRequest.builder().name("Ivan").build();
-        String token = Authorization.getToken();
+        EmployeeRequest requestJSON = RequestFactory.createEmployeeOnlyName("Ivan");
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = given(requestSpecification).
-                body(requestJSON).
-                auth().oauth2(token).
-                when().put(Endpoints.EMPLOYEE + "/" + employeeId).
+        ResponseMessage actualResponseMessage = UpdateEmployeeAPI.getResponse(employeeId, requestJSON).
                 then().extract().as(ResponseMessage.class);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
@@ -172,18 +154,14 @@ public class UpdateEmployeeAT extends BaseTest {
     @DisplayName("Обновить только Позицию")
     public void updatePositionTest() {
 
-        EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        EmployeeRequest initialEmployee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
         int employeeId = UserRepository.createEmployeeDB(initialEmployee);
 
-        EmployeeRequest requestJSON = EmployeeRequest.builder().position("AQA").build();
-        String token = Authorization.getToken();
+        EmployeeRequest requestJSON = RequestFactory.createEmployeeOnlyPosition("AQA");
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = given(requestSpecification).
-                body(requestJSON).
-                auth().oauth2(token).
-                when().put(Endpoints.EMPLOYEE + "/" + employeeId).
+        ResponseMessage actualResponseMessage = UpdateEmployeeAPI.getResponse(employeeId, requestJSON).
                 then().extract().as(ResponseMessage.class);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
@@ -196,18 +174,14 @@ public class UpdateEmployeeAT extends BaseTest {
     @DisplayName("Обновить только Фамилию")
     public void updateSurnameTest() {
 
-        EmployeeRequest initialEmployee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        EmployeeRequest initialEmployee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
         int employeeId = UserRepository.createEmployeeDB(initialEmployee);
 
-        EmployeeRequest requestJSON = EmployeeRequest.builder().surname("Ivanova").build();
-        String token = Authorization.getToken();
+        EmployeeRequest requestJSON = RequestFactory.createEmployeeOnlySurname("Ivanova");
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = given(requestSpecification).
-                body(requestJSON).
-                auth().oauth2(token).
-                when().put(Endpoints.EMPLOYEE + "/" + employeeId).
+        ResponseMessage actualResponseMessage = UpdateEmployeeAPI.getResponse(employeeId, requestJSON).
                 then().extract().as(ResponseMessage.class);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
