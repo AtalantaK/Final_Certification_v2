@@ -1,15 +1,14 @@
 package API.tests.tests.ContractAT;
 
+import API.api.GetEmployeesAPI;
 import API.base.BaseTest;
-import API.utils.Endpoints;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static io.restassured.RestAssured.given;
 
 @DisplayName("Contract AT. Получение списка всех сотрудников")
 public class GetEmployeesAT extends BaseTest {
@@ -21,8 +20,7 @@ public class GetEmployeesAT extends BaseTest {
     @DisplayName("Проверить код ответа")
     public void checkResponseCodeTest() {
 
-        given(requestSpecification).
-                when().get(Endpoints.EMPLOYEES).
-                then().statusCode(200);
+        Response response = GetEmployeesAPI.getResponse();
+        GetEmployeesAPI.checkStatusCode(response);
     }
 }

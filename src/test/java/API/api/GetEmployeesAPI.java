@@ -1,0 +1,18 @@
+package API.api;
+
+import API.base.BaseTest;
+import API.utils.Endpoints;
+import io.restassured.response.Response;
+
+import static io.restassured.RestAssured.given;
+
+public class GetEmployeesAPI extends BaseTest {
+    public static Response getResponse() {
+        return given(requestSpecification).
+                when().get(Endpoints.EMPLOYEES);
+    }
+
+    public static void checkStatusCode(Response response){
+        response.then().statusCode(200);
+    }
+}
