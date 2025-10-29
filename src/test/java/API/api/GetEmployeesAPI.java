@@ -11,8 +11,4 @@ public class GetEmployeesAPI extends BaseTest {
         return given(requestSpecification).
                 when().get(Endpoints.EMPLOYEES);
     }
-
-    public static void checkStatusCode(Response response){
-        response.then().statusCode(200);
-    }
 }

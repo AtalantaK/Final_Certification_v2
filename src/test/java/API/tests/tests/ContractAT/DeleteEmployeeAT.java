@@ -33,7 +33,7 @@ public class DeleteEmployeeAT extends BaseTest {
         int employeeId = UserRepository.createEmployeeDB(employeeRequest);
 
         Response response = DeleteEmployeeAPI.getResponse(employeeId);
-        BaseAPI.checkMessage(response, "Deleted");
+        BaseAPI.checkParameter(response, "message", "Deleted");
     }
 
     @Test
@@ -45,6 +45,6 @@ public class DeleteEmployeeAT extends BaseTest {
 
         Response response = DeleteEmployeeAPI.getResponse(employeeId);
         BaseAPI.checkStatusCode(response, 404);
-        BaseAPI.checkMessage(response, "Employee with employee_id = " + employeeId + " not found");
+        BaseAPI.checkParameter(response, "message", "Employee with employee_id = " + employeeId + " not found");
     }
 }

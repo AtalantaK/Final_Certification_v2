@@ -1,6 +1,7 @@
 package API.tests.tests.ContractAT;
 
 import API.api.GetEmployeesAPI;
+import API.base.BaseAPI;
 import API.base.BaseTest;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
@@ -21,6 +22,6 @@ public class GetEmployeesAT extends BaseTest {
     public void checkResponseCodeTest() {
 
         Response response = GetEmployeesAPI.getResponse();
-        GetEmployeesAPI.checkStatusCode(response);
+        BaseAPI.checkStatusCode(response, 200);
     }
 }

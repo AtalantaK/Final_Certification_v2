@@ -42,7 +42,7 @@ public class CreateEmployeeAT extends BaseTest {
 
         Response response = CreateEmployeeAPI.getResponse(requestJSON);
         CreateEmployeeAPI.checkID(response);
-        BaseAPI.checkMessage(response, "Employee created successfully");
+        BaseAPI.checkParameter(response, "message", "Employee created successfully");
 
         int id = CreateEmployeeAPI.getEmployeeID(response);
 
