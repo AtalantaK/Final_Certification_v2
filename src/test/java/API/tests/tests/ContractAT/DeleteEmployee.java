@@ -1,17 +1,14 @@
 package API.tests.tests.ContractAT;
 
+import API.api.DeleteEmployeeAPI;
 import API.base.BaseTest;
 import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
-import API.utils.Endpoints;
-import API.utils.ServerUp;
-import io.restassured.RestAssured;
-import org.junit.jupiter.api.BeforeAll;
+import API.utils.RequestFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
 @DisplayName("Contract AT. Удалить сотрудника по айди")
@@ -21,11 +18,10 @@ public class DeleteEmployee extends BaseTest {
     @DisplayName("Проверить код ответа")
     public void checkResponseCodeTest() {
 
-        EmployeeRequest employeeRequest = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        EmployeeRequest employeeRequest = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
         int employeeId = UserRepository.createEmployeeDB(employeeRequest);
 
-        given(requestSpecification).
-                when().delete(Endpoints.EMPLOYEE + "/" + employeeId).
+        DeleteEmployeeAPI.getResponse(employeeId).
                 then().statusCode(200);
     }
 
@@ -33,11 +29,10 @@ public class DeleteEmployee extends BaseTest {
     @DisplayName("Проверить тело ответа")
     public void checkResponseBodyTest() {
 
-        EmployeeRequest employeeRequest = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        EmployeeRequest employeeRequest = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
         int employeeId = UserRepository.createEmployeeDB(employeeRequest);
 
-        given(requestSpecification).
-                when().delete(Endpoints.EMPLOYEE + "/" + employeeId).
+        DeleteEmployeeAPI.getResponse(employeeId).
                 then().body("message", is("Deleted"));
     }
 
@@ -48,8 +43,7 @@ public class DeleteEmployee extends BaseTest {
 
         int employeeId = 12345;
 
-        given(requestSpecification).
-                when().delete(Endpoints.EMPLOYEE + "/" + employeeId).
+        DeleteEmployeeAPI.getResponse(employeeId).
                 then().statusCode(404).
                 body("message", is("Employee with employee_id = " + employeeId + " not found"));
     }
