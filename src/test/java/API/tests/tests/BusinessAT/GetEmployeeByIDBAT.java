@@ -1,52 +1,48 @@
 package API.tests.tests.BusinessAT;
 
-import API.services.EmployeeMethodsAPI;
+import API.api.GetEmployeeByIDAPI;
+import API.base.BaseAPI;
+import API.base.BaseTest;
 import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
-import API.utils.ServerUp;
+import API.utils.RequestFactory;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
-import org.junit.jupiter.api.BeforeAll;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Получить сотрудника по имени")
-public class GetEmployeeByName {
-
-    @BeforeAll
-    public static void setUp() {
-        ServerUp.isServerUp();
-    }
+@DisplayName("Получить сотрудника по ID")
+public class GetEmployeeByIDBAT extends BaseTest {
 
     @Test
-    @DisplayName("Получить сотрудника по имени")
-    @Description("Описание: Получить сотрудника по имени")
+    @DisplayName("Получить сотрудника по ID")
+    @Description("Описание: Получить сотрудника по ID")
     @Severity(SeverityLevel.BLOCKER)
     @Story("Бизнес логика")
     @Tag("GET")
-    public void getEmployeeByName() {
-
-        String employeeName = "Kseniia";
+    public void getEmployeeByID() {
 
         //Создаем сотрудника
-        EmployeeRequest employee = EmployeeRequest.builder().city("Samara").name(employeeName).position("QA").surname("Kalashnikova").build();
+        EmployeeRequest employee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "QA", "Kalashnikova");
 
         //Вставляем сотрудника в БД
         int employeeId = UserRepository.createEmployeeDB(employee);
 
-        EmployeeResponse employeeResponse = EmployeeMethodsAPI.getEmployeeByNameAPI(employeeName).as(EmployeeResponse.class);
+        Response response = GetEmployeeByIDAPI.getResponse(employeeId);
+        EmployeeResponse employeeResponse = BaseAPI.extractEmployeeResponse(response);
 
         //Ищем в БД нашего созданного сотрудника
         EmployeeResponse employeeDB = UserRepository.getEmployeeDB(employeeId);
 
         UserRepository.deleteEmployeeDB(employeeDB);
 
-        assertThat(employeeResponse.getName()).isEqualTo(employeeDB.getName());
+        assertThat(employeeResponse).isEqualTo(employeeDB);
     }
 }

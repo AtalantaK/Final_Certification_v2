@@ -1,14 +1,14 @@
 package API.tests.tests.BusinessAT;
 
-import API.services.EmployeeMethodsAPI;
+import API.api.GetEmployeesAPI;
+import API.base.BaseTest;
 import API.repositories.UserRepository;
 import API.models.EmployeeResponse;
-import API.utils.ServerUp;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
-import org.junit.jupiter.api.BeforeAll;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -18,12 +18,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Получение списка всех сотрудников")
-public class GetEmployees {
-
-    @BeforeAll
-    public static void setUp() {
-        ServerUp.isServerUp();
-    }
+public class GetEmployeesBAT extends BaseTest {
 
     @Test
     @DisplayName("Получение списка всех сотрудников")
@@ -34,7 +29,8 @@ public class GetEmployees {
     public void getEmployees() {
 
         //Получаем всех сотрудников через API
-        List<EmployeeResponse> employeesResponse = EmployeeMethodsAPI.getEmployeesAPI().jsonPath().getList(".", EmployeeResponse.class);
+        Response response = GetEmployeesAPI.getResponse();
+        List<EmployeeResponse> employeesResponse = GetEmployeesAPI.extractListEmployees(response);
 
         //Ищем в БД наших сотрудников
         List<EmployeeResponse> employeesDB = UserRepository.getEmployeesDB();

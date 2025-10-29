@@ -1,15 +1,15 @@
 package API.tests.tests.BusinessAT;
 
-import API.services.EmployeeMethodsAPI;
+import API.api.UpdateEmployeeAPI;
+import API.base.BaseTest;
 import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
-import API.utils.ServerUp;
+import API.utils.RequestFactory;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -17,12 +17,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Обновить информацию о сотруднике")
-public class UpdateEmployee {
-
-    @BeforeAll
-    public static void setUp() {
-        ServerUp.isServerUp();
-    }
+public class UpdateEmployeeBAT extends BaseTest {
 
     @Test
     @DisplayName("Обновить сотрудника полностью")
@@ -33,13 +28,14 @@ public class UpdateEmployee {
     public void updateEmployeeCompletely() {
 
         //Создаем сотрудника
-        EmployeeRequest employee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        EmployeeRequest employee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
 
         //Вставляем сотрудника в БД
         int employeeId = UserRepository.createEmployeeDB(employee);
 
         //Обновляем сотрудника через API
-        EmployeeMethodsAPI.updateEmployeeCompletelyAPI(employeeId, "Moscow", "Xenia", "AQA", "Ivanova");
+
+        UpdateEmployeeAPI.getResponse(employeeId, RequestFactory.createEmployeeRequest("Moscow", "Xenia", "AQA", "Ivanova"));
         EmployeeResponse employeeResponse = new EmployeeResponse("Moscow", employeeId, "Xenia", "AQA", "Ivanova");
 
         //Ищем в БД нашего обновленного сотрудника
@@ -48,7 +44,6 @@ public class UpdateEmployee {
         UserRepository.deleteEmployeeDB(employeeDB);
 
         assertThat(employeeResponse).isEqualTo(employeeDB);
-
     }
 
     @Test
@@ -60,13 +55,14 @@ public class UpdateEmployee {
     public void updateEmployeePartially() {
 
         //Создаем сотрудника
-        EmployeeRequest employee = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        EmployeeRequest employee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
 
         //Вставляем сотрудника в БД
         int employeeId = UserRepository.createEmployeeDB(employee);
 
         //Обновляем сотрудника через API
-        EmployeeMethodsAPI.updateEmployeeCityPositionAPI(employeeId, "Moscow", "AQA");
+        UpdateEmployeeAPI.getResponse(employeeId, RequestFactory.createEmployeeOnlyCity("Moscow"));
+        UpdateEmployeeAPI.getResponse(employeeId, RequestFactory.createEmployeeOnlyPosition("AQA"));
         EmployeeResponse employeeResponse = new EmployeeResponse("Moscow", employeeId, "Kseniia", "AQA", "Kalashnikova");
 
         //Ищем в БД нашего обновленного сотрудника
@@ -75,6 +71,5 @@ public class UpdateEmployee {
         UserRepository.deleteEmployeeDB(employeeDB);
 
         assertThat(employeeResponse).isEqualTo(employeeDB);
-
     }
 }
