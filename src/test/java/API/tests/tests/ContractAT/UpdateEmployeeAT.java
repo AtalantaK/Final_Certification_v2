@@ -1,24 +1,22 @@
 package API.tests.tests.ContractAT;
 
 import API.api.UpdateEmployeeAPI;
-import API.base.Authorization;
+import API.base.BaseAPI;
 import API.base.BaseTest;
 import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
 import API.models.ResponseMessage;
 import API.models.ValidationErrorResponse;
-import API.utils.Endpoints;
 import API.utils.RequestFactory;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.is;
 
 @DisplayName("Обновить информацию о сотруднике")
 public class UpdateEmployeeAT extends BaseTest {
@@ -32,8 +30,8 @@ public class UpdateEmployeeAT extends BaseTest {
 
         EmployeeRequest requestJSON = RequestFactory.createEmployeeRequest("Moscow", "Xenia", "AQA", "Ivanova");
 
-        UpdateEmployeeAPI.getResponse(employeeId, requestJSON).
-                then().statusCode(200);
+        Response response = UpdateEmployeeAPI.getResponse(employeeId, requestJSON);
+        BaseAPI.checkStatusCode(response, 200);
 
         EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), employeeId, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
         UserRepository.deleteEmployeeDB(employeeResponse);
@@ -50,8 +48,8 @@ public class UpdateEmployeeAT extends BaseTest {
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = UpdateEmployeeAPI.getResponse(employeeId, requestJSON).
-                then().extract().as(ResponseMessage.class);
+        Response response = UpdateEmployeeAPI.getResponse(employeeId, requestJSON);
+        ResponseMessage actualResponseMessage = BaseAPI.extractResponseMessage(response);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
@@ -73,8 +71,6 @@ public class UpdateEmployeeAT extends BaseTest {
                 "    \"surname\": 123\n" +
                 "}";
 
-        String token = Authorization.getToken();
-
         List<String> wrongTypeFields = new ArrayList<>();
         wrongTypeFields.add("city");
         wrongTypeFields.add("name");
@@ -83,14 +79,9 @@ public class UpdateEmployeeAT extends BaseTest {
 
         ValidationErrorResponse expectedResponseMessage = new ValidationErrorResponse("Invalid field types", "All fields must be strings", wrongTypeFields);
 
-        //todo: тут getResponse не подходит потому что реквест ввиде строки - переделать!
-        ValidationErrorResponse actualResponseMessage = given(requestSpecification).
-                body(requestJSON).
-                auth().oauth2(token).
-                when().put(Endpoints.EMPLOYEE + "/" + employeeId).
-                then().
-                statusCode(400).
-                extract().as(ValidationErrorResponse.class);
+        Response response = UpdateEmployeeAPI.getResponse(employeeId, requestJSON);
+        BaseAPI.checkStatusCode(response, 400);
+        ValidationErrorResponse actualResponseMessage = BaseAPI.extractValidationErrorResponse(response);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
@@ -106,8 +97,9 @@ public class UpdateEmployeeAT extends BaseTest {
 
         EmployeeRequest requestJSON = RequestFactory.createEmployeeRequest("Moscow", "Kseniia", "AQA", "Kalashnikova");
 
-        UpdateEmployeeAPI.getResponse(employeeId, requestJSON).
-                then().statusCode(404).body("error", is("Employee with id '" + employeeId + "' not found"));
+        Response response = UpdateEmployeeAPI.getResponse(employeeId, requestJSON);
+        BaseAPI.checkStatusCode(response, 404);
+        BaseAPI.checkParameter(response, "error", "Employee with id '" + employeeId + "' not found");
     }
 
     @Test
@@ -121,8 +113,8 @@ public class UpdateEmployeeAT extends BaseTest {
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = UpdateEmployeeAPI.getResponse(employeeId, requestJSON).
-                then().extract().as(ResponseMessage.class);
+        Response response = UpdateEmployeeAPI.getResponse(employeeId, requestJSON);
+        ResponseMessage actualResponseMessage = BaseAPI.extractResponseMessage(response);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
@@ -141,8 +133,8 @@ public class UpdateEmployeeAT extends BaseTest {
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = UpdateEmployeeAPI.getResponse(employeeId, requestJSON).
-                then().extract().as(ResponseMessage.class);
+        Response response = UpdateEmployeeAPI.getResponse(employeeId, requestJSON);
+        ResponseMessage actualResponseMessage = BaseAPI.extractResponseMessage(response);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
@@ -161,8 +153,8 @@ public class UpdateEmployeeAT extends BaseTest {
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = UpdateEmployeeAPI.getResponse(employeeId, requestJSON).
-                then().extract().as(ResponseMessage.class);
+        Response response = UpdateEmployeeAPI.getResponse(employeeId, requestJSON);
+        ResponseMessage actualResponseMessage = BaseAPI.extractResponseMessage(response);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 
@@ -181,8 +173,8 @@ public class UpdateEmployeeAT extends BaseTest {
 
         ResponseMessage expectedResponseMessage = new ResponseMessage(employeeId, "Employee updated successfully");
 
-        ResponseMessage actualResponseMessage = UpdateEmployeeAPI.getResponse(employeeId, requestJSON).
-                then().extract().as(ResponseMessage.class);
+        Response response = UpdateEmployeeAPI.getResponse(employeeId, requestJSON);
+        ResponseMessage actualResponseMessage = BaseAPI.extractResponseMessage(response);
 
         assertThat(actualResponseMessage).isEqualTo(expectedResponseMessage);
 

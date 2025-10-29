@@ -13,11 +13,6 @@ public abstract class BaseTest {
     protected static String token;
     protected static RequestSpecification requestSpecification;
 
-    //todo: можно кастомизировать реквест, респонс в Allure
-//    static AllureRestAssured allureFilter = new AllureRestAssured()
-//            .setRequestTemplate("my-http-request.ftl")
-//            .setResponseTemplate("my-http-response.ftl");
-
     static AllureRestAssured allureFilter = new AllureRestAssured()
             .setRequestAttachmentName("Request")
             .setResponseAttachmentName("Response");
@@ -32,8 +27,6 @@ public abstract class BaseTest {
                 filter(allureFilter).
                 baseUri(Endpoints.URI).
                 contentType(ContentType.JSON).
-//                auth().oauth2(token).
                 log().all();
-
     }
 }

@@ -2,7 +2,6 @@ package API.api;
 
 import API.base.BaseTest;
 import API.models.EmployeeRequest;
-import API.models.ErrorResponse;
 import API.utils.Endpoints;
 import io.restassured.response.Response;
 
@@ -24,9 +23,5 @@ public class CreateEmployeeAPI extends BaseTest {
 
     public static int getEmployeeID(Response response) {
         return response.then().extract().path("id");
-    }
-
-    public static ErrorResponse getErrorResponse(Response response) {
-        return response.then().extract().as(ErrorResponse.class);
     }
 }

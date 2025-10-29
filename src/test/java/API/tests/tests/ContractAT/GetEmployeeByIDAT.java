@@ -41,7 +41,7 @@ public class GetEmployeeByIDAT extends BaseTest {
         EmployeeResponse expectedEmployeeResponse = new EmployeeResponse("Samara", employeeId, "Kseniia", "Senior QA", "Kalashnikova");
 
         Response response = GetEmployeeByIDAPI.getResponse(employeeId);
-        EmployeeResponse actualEmployeeResponse = GetEmployeeByIDAPI.getEmployeeResponse(response);
+        EmployeeResponse actualEmployeeResponse = BaseAPI.extractEmployeeResponse(response);
 
         assertThat(expectedEmployeeResponse).isEqualTo(actualEmployeeResponse);
 

@@ -72,7 +72,7 @@ public class CreateEmployeeAT extends BaseTest {
         EmployeeRequest requestJSON = RequestFactory.createEmployeeRequestWOName("Moscow", "QA", "Ivanov");
 
         Response response = CreateEmployeeAPI.getResponse(requestJSON);
-        ErrorResponse actualErrorResponse = CreateEmployeeAPI.getErrorResponse(response);
+        ErrorResponse actualErrorResponse = BaseAPI.extractErrorResponse(response);
 
         List<String> array = new ArrayList<>();
         array.add("name");
@@ -87,7 +87,7 @@ public class CreateEmployeeAT extends BaseTest {
         EmployeeRequest requestJSON = RequestFactory.createEmployeeRequestWOSurnamePosition("Moscow", "Ivan");
 
         Response response = CreateEmployeeAPI.getResponse(requestJSON);
-        ErrorResponse actualErrorResponse = CreateEmployeeAPI.getErrorResponse(response);
+        ErrorResponse actualErrorResponse = BaseAPI.extractErrorResponse(response);
 
         List<String> array = new ArrayList<>();
         array.add("surname");

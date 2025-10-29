@@ -1,16 +1,17 @@
 package API.tests.tests.ContractAT;
 
 import API.api.GetEmployeeByNameAPI;
+import API.base.BaseAPI;
 import API.base.BaseTest;
 import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
 import API.utils.RequestFactory;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.is;
 
 @DisplayName("Contract AT. Получить сотрудника по имени")
 public class GetEmployeeByNameAT extends BaseTest {
@@ -20,11 +21,11 @@ public class GetEmployeeByNameAT extends BaseTest {
     public void checkResponseCodeTest() {
 
         EmployeeRequest employeeRequest = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
-        ;
+
         int employeeId = UserRepository.createEmployeeDB(employeeRequest);
 
-        GetEmployeeByNameAPI.getResponse(employeeRequest.getName()).
-                then().statusCode(200);
+        Response response = GetEmployeeByNameAPI.getResponse(employeeRequest.getName());
+        BaseAPI.checkStatusCode(response, 200);
 
         EmployeeResponse employeeResponse = new EmployeeResponse(employeeRequest.getCity(), employeeId, employeeRequest.getName(), employeeRequest.getPosition(), employeeRequest.getSurname());
         UserRepository.deleteEmployeeDB(employeeResponse);
@@ -35,11 +36,11 @@ public class GetEmployeeByNameAT extends BaseTest {
     public void checkResponseBodyTest() {
 
         EmployeeRequest employeeRequest = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
-        ;
+
         UserRepository.createEmployeeDB(employeeRequest);
 
-        EmployeeResponse employeeResponse = GetEmployeeByNameAPI.getResponse(employeeRequest.getName()).
-                then().extract().as(EmployeeResponse.class);
+        Response response = GetEmployeeByNameAPI.getResponse(employeeRequest.getName());
+        EmployeeResponse employeeResponse = BaseAPI.extractEmployeeResponse(response);
 
         assertThat(employeeResponse.getName()).isEqualTo(employeeRequest.getName());
 
@@ -52,8 +53,8 @@ public class GetEmployeeByNameAT extends BaseTest {
 
         String employeeName = "TestKseniiaForAT";
 
-        GetEmployeeByNameAPI.getResponse(employeeName).
-                then().statusCode(404).
-                body("error", is("Employee with name '" + employeeName + "' not found"));
+        Response response = GetEmployeeByNameAPI.getResponse(employeeName);
+        BaseAPI.checkStatusCode(response, 404);
+        BaseAPI.checkParameter(response, "error", "Employee with name '" + employeeName + "' not found");
     }
 }
