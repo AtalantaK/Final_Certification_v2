@@ -26,9 +26,10 @@ public class CreateEmployeeAT extends BaseTest {
     public void checkResponseCodeTest() {
         EmployeeRequest requestJSON = RequestFactory.createEmployeeRequest("Moscow", "Ivan", "QA", "Ivanov");
 
-        int id = CreateEmployeeAPI.getResponse(requestJSON).
-                then().statusCode(201).
-                extract().path("id");
+        Response response = CreateEmployeeAPI.getResponse(requestJSON);
+        CreateEmployeeAPI.checkStatusCode(response);
+
+        int id = CreateEmployeeAPI.getEmployeeID(response);
 
         EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), id, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
         UserRepository.deleteEmployeeDB(employeeResponse);
@@ -39,11 +40,11 @@ public class CreateEmployeeAT extends BaseTest {
     public void checkResponseBodyTest() {
         EmployeeRequest requestJSON = RequestFactory.createEmployeeRequest("Moscow", "Ivan", "QA", "Ivanov");
 
-        int id = CreateEmployeeAPI.getResponse(requestJSON).
-                then().
-                body("id", is(not(blankString()))).
-                body("message", is("Employee created successfully")).
-                extract().path("id");
+        Response response = CreateEmployeeAPI.getResponse(requestJSON);
+        CreateEmployeeAPI.checkID(response);
+        CreateEmployeeAPI.checkMessage(response);
+
+        int id = CreateEmployeeAPI.getEmployeeID(response);
 
         EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), id, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
         UserRepository.deleteEmployeeDB(employeeResponse);
@@ -59,7 +60,7 @@ public class CreateEmployeeAT extends BaseTest {
 
         System.out.println(response.prettyPrint());
 
-        int id = response.path("id");
+        int id = CreateEmployeeAPI.getEmployeeID(response);
 
         EmployeeResponse employeeResponse = new EmployeeResponse(requestJSON.getCity(), id, requestJSON.getName(), requestJSON.getPosition(), requestJSON.getSurname());
         UserRepository.deleteEmployeeDB(employeeResponse);
@@ -70,9 +71,8 @@ public class CreateEmployeeAT extends BaseTest {
     public void createEmployeeWithoutNameTest() {
         EmployeeRequest requestJSON = RequestFactory.createEmployeeRequestWOName("Moscow", "QA", "Ivanov");
 
-        ErrorResponse actualErrorResponse = CreateEmployeeAPI.getResponse(requestJSON).
-                then().
-                extract().as(ErrorResponse.class);
+        Response response = CreateEmployeeAPI.getResponse(requestJSON);
+        ErrorResponse actualErrorResponse = CreateEmployeeAPI.getErrorResponse(response);
 
         List<String> array = new ArrayList<>();
         array.add("name");
@@ -86,9 +86,8 @@ public class CreateEmployeeAT extends BaseTest {
     public void createEmployeeWithoutSurnamePositionTest() {
         EmployeeRequest requestJSON = RequestFactory.createEmployeeRequestWOSurnamePosition("Moscow", "Ivan");
 
-        ErrorResponse actualErrorResponse = CreateEmployeeAPI.getResponse(requestJSON).
-                then().
-                extract().as(ErrorResponse.class);
+        Response response = CreateEmployeeAPI.getResponse(requestJSON);
+        ErrorResponse actualErrorResponse = CreateEmployeeAPI.getErrorResponse(response);
 
         List<String> array = new ArrayList<>();
         array.add("surname");

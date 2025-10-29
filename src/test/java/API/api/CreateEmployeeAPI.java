@@ -2,10 +2,12 @@ package API.api;
 
 import API.base.BaseTest;
 import API.models.EmployeeRequest;
+import API.models.ErrorResponse;
 import API.utils.Endpoints;
 import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.*;
 
 public class CreateEmployeeAPI extends BaseTest {
 
@@ -16,8 +18,23 @@ public class CreateEmployeeAPI extends BaseTest {
                 when().post(Endpoints.EMPLOYEE);
     }
 
-    //todo: нужно ли еще дописать методы для statusCode и извлечению параметров?
-    public static int getStatusCode(){
-        return 0;
+    public static void checkStatusCode(Response response) {
+        response.then().statusCode(201);
+    }
+
+    public static void checkID(Response response) {
+        response.then().body("id", is(not(blankString())));
+    }
+
+    public static void checkMessage(Response response) {
+        response.then().body("message", is("Employee created successfully"));
+    }
+
+    public static int getEmployeeID(Response response) {
+        return response.then().extract().path("id");
+    }
+
+    public static ErrorResponse getErrorResponse(Response response) {
+        return response.then().extract().as(ErrorResponse.class);
     }
 }
