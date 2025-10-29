@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @DisplayName("Contract AT. Создание нового сотрудника")
-public class CreateEmployee extends BaseTest {
+public class CreateEmployeeAT extends BaseTest {
 
     @Test
     @DisplayName("Проверить код ответа")

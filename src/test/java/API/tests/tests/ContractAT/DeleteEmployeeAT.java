@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.is;
 
 @DisplayName("Contract AT. Удалить сотрудника по айди")
-public class DeleteEmployee extends BaseTest {
+public class DeleteEmployeeAT extends BaseTest {
 
     @Test
     @DisplayName("Проверить код ответа")

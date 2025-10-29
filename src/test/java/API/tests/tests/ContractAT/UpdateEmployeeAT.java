@@ -8,10 +8,6 @@ import API.models.EmployeeResponse;
 import API.models.ResponseMessage;
 import API.models.ValidationErrorResponse;
 import API.utils.Endpoints;
-import API.utils.ServerUp;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @DisplayName("Обновить информацию о сотруднике")
-public class UpdateEmployee extends BaseTest {
+public class UpdateEmployeeAT extends BaseTest {
 
     @Test
     @DisplayName("Проверить код ответа")

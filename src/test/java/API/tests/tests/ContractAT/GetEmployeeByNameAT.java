@@ -5,9 +5,6 @@ import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
 import API.utils.Endpoints;
-import API.utils.ServerUp;
-import io.restassured.RestAssured;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @DisplayName("Contract AT. Получить сотрудника по имени")
-public class GetEmployeeByName extends BaseTest {
+public class GetEmployeeByNameAT extends BaseTest {
 
     @Test
     @DisplayName("Проверить код ответа")
