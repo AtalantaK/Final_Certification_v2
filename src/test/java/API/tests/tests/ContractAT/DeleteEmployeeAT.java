@@ -1,15 +1,15 @@
 package API.tests.tests.ContractAT;
 
 import API.api.DeleteEmployeeAPI;
+import API.base.BaseAPI;
 import API.base.BaseTest;
 import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.utils.RequestFactory;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.hamcrest.Matchers.is;
 
 @DisplayName("Contract AT. Удалить сотрудника по айди")
 public class DeleteEmployeeAT extends BaseTest {
@@ -21,8 +21,8 @@ public class DeleteEmployeeAT extends BaseTest {
         EmployeeRequest employeeRequest = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
         int employeeId = UserRepository.createEmployeeDB(employeeRequest);
 
-        DeleteEmployeeAPI.getResponse(employeeId).
-                then().statusCode(200);
+        Response response = DeleteEmployeeAPI.getResponse(employeeId);
+        BaseAPI.checkStatusCode(response, 200);
     }
 
     @Test
@@ -32,8 +32,8 @@ public class DeleteEmployeeAT extends BaseTest {
         EmployeeRequest employeeRequest = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
         int employeeId = UserRepository.createEmployeeDB(employeeRequest);
 
-        DeleteEmployeeAPI.getResponse(employeeId).
-                then().body("message", is("Deleted"));
+        Response response = DeleteEmployeeAPI.getResponse(employeeId);
+        BaseAPI.checkMessage(response, "Deleted");
     }
 
     @Test
@@ -43,8 +43,8 @@ public class DeleteEmployeeAT extends BaseTest {
 
         int employeeId = 12345;
 
-        DeleteEmployeeAPI.getResponse(employeeId).
-                then().statusCode(404).
-                body("message", is("Employee with employee_id = " + employeeId + " not found"));
+        Response response = DeleteEmployeeAPI.getResponse(employeeId);
+        BaseAPI.checkStatusCode(response, 404);
+        BaseAPI.checkMessage(response, "Employee with employee_id = " + employeeId + " not found");
     }
 }

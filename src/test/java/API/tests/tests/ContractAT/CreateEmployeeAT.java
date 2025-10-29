@@ -1,6 +1,7 @@
 package API.tests.tests.ContractAT;
 
 import API.api.CreateEmployeeAPI;
+import API.base.BaseAPI;
 import API.base.BaseTest;
 import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
 
 @DisplayName("Contract AT. Создание нового сотрудника")
 public class CreateEmployeeAT extends BaseTest {
@@ -27,7 +27,7 @@ public class CreateEmployeeAT extends BaseTest {
         EmployeeRequest requestJSON = RequestFactory.createEmployeeRequest("Moscow", "Ivan", "QA", "Ivanov");
 
         Response response = CreateEmployeeAPI.getResponse(requestJSON);
-        CreateEmployeeAPI.checkStatusCode(response);
+        BaseAPI.checkStatusCode(response, 201);
 
         int id = CreateEmployeeAPI.getEmployeeID(response);
 
@@ -42,7 +42,7 @@ public class CreateEmployeeAT extends BaseTest {
 
         Response response = CreateEmployeeAPI.getResponse(requestJSON);
         CreateEmployeeAPI.checkID(response);
-        CreateEmployeeAPI.checkMessage(response);
+        BaseAPI.checkMessage(response, "Employee created successfully");
 
         int id = CreateEmployeeAPI.getEmployeeID(response);
 
