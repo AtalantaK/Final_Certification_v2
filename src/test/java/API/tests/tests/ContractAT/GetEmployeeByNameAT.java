@@ -1,14 +1,14 @@
 package API.tests.tests.ContractAT;
 
+import API.api.GetEmployeeByNameAPI;
 import API.base.BaseTest;
 import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
-import API.utils.Endpoints;
+import API.utils.RequestFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -19,14 +19,14 @@ public class GetEmployeeByNameAT extends BaseTest {
     @DisplayName("Проверить код ответа")
     public void checkResponseCodeTest() {
 
-        EmployeeRequest employeeRequest = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        EmployeeRequest employeeRequest = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
+        ;
         int employeeId = UserRepository.createEmployeeDB(employeeRequest);
 
-        given(requestSpecification).
-                when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeRequest.getName()).
+        GetEmployeeByNameAPI.getResponse(employeeRequest.getName()).
                 then().statusCode(200);
 
-        EmployeeResponse employeeResponse = new EmployeeResponse(employeeRequest.getCity(),employeeId, employeeRequest.getName(),employeeRequest.getPosition(),employeeRequest.getSurname());
+        EmployeeResponse employeeResponse = new EmployeeResponse(employeeRequest.getCity(), employeeId, employeeRequest.getName(), employeeRequest.getPosition(), employeeRequest.getSurname());
         UserRepository.deleteEmployeeDB(employeeResponse);
     }
 
@@ -34,11 +34,11 @@ public class GetEmployeeByNameAT extends BaseTest {
     @DisplayName("Проверить тело ответа")
     public void checkResponseBodyTest() {
 
-        EmployeeRequest employeeRequest = EmployeeRequest.builder().city("Samara").name("Kseniia").position("Senior QA").surname("Kalashnikova").build();
+        EmployeeRequest employeeRequest = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
+        ;
         UserRepository.createEmployeeDB(employeeRequest);
 
-        EmployeeResponse employeeResponse = given(requestSpecification).
-                when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeRequest.getName()).
+        EmployeeResponse employeeResponse = GetEmployeeByNameAPI.getResponse(employeeRequest.getName()).
                 then().extract().as(EmployeeResponse.class);
 
         assertThat(employeeResponse.getName()).isEqualTo(employeeRequest.getName());
@@ -52,8 +52,7 @@ public class GetEmployeeByNameAT extends BaseTest {
 
         String employeeName = "TestKseniiaForAT";
 
-        given(requestSpecification).
-                when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeName).
+        GetEmployeeByNameAPI.getResponse(employeeName).
                 then().statusCode(404).
                 body("error", is("Employee with name '" + employeeName + "' not found"));
     }

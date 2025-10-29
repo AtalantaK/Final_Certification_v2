@@ -6,9 +6,9 @@ import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
 
-public class GetEmployeeByIDAPI extends BaseTest {
-    public static Response getResponse(int employeeId) {
+public class GetEmployeeByNameAPI extends BaseTest {
+    public static Response getResponse(String employeeName) {
         return given(requestSpecification).
-                when().get(Endpoints.EMPLOYEE + "/" + employeeId);
+                when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeName);
     }
 }
