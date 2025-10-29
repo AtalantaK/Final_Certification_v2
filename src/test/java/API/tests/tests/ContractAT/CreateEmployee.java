@@ -1,12 +1,12 @@
 package API.tests.tests.ContractAT;
 
+import API.api.CreateEmployeeAPI;
 import API.base.BaseTest;
 import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
 import API.models.ErrorResponse;
-import API.utils.Endpoints;
-import io.restassured.http.ContentType;
+import API.utils.RequestFactory;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -25,12 +24,9 @@ public class CreateEmployee extends BaseTest {
     @Test
     @DisplayName("Проверить код ответа")
     public void checkResponseCodeTest() {
-        EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Ivan").position("QA").surname("Ivanov").build();
+        EmployeeRequest requestJSON = RequestFactory.createEmployeeRequest("Moscow", "Ivan", "QA", "Ivanov");
 
-        int id = given(requestSpecification).
-                body(requestJSON).
-                auth().oauth2(token).
-                when().post(Endpoints.EMPLOYEE).
+        int id = CreateEmployeeAPI.getResponse(requestJSON).
                 then().statusCode(201).
                 extract().path("id");
 
@@ -41,12 +37,9 @@ public class CreateEmployee extends BaseTest {
     @Test
     @DisplayName("Проверить тело ответа")
     public void checkResponseBodyTest() {
-        EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Ivan").position("QA").surname("Ivanov").build();
+        EmployeeRequest requestJSON = RequestFactory.createEmployeeRequest("Moscow", "Ivan", "QA", "Ivanov");
 
-        int id = given(requestSpecification).
-                body(requestJSON).
-                auth().oauth2(token).
-                when().post(Endpoints.EMPLOYEE).
+        int id = CreateEmployeeAPI.getResponse(requestJSON).
                 then().
                 body("id", is(not(blankString()))).
                 body("message", is("Employee created successfully")).
@@ -60,12 +53,9 @@ public class CreateEmployee extends BaseTest {
     @DisplayName("Создать сотрудника без city")
     @Disabled("Есть актуальный баг")
     public void createEmployeeWithoutCityTest() {
-        EmployeeRequest requestJSON = EmployeeRequest.builder().name("Ivan").position("QA").surname("Ivanov").build();
+        EmployeeRequest requestJSON = RequestFactory.createEmployeeRequestWOCity("Ivan", "QA", "Ivanov");
 
-        Response response = given(requestSpecification).
-                body(requestJSON).
-                auth().oauth2(token).
-                when().post(Endpoints.EMPLOYEE);
+        Response response = CreateEmployeeAPI.getResponse(requestJSON);
 
         System.out.println(response.prettyPrint());
 
@@ -78,12 +68,9 @@ public class CreateEmployee extends BaseTest {
     @Test
     @DisplayName("Создать сотрудника без name")
     public void createEmployeeWithoutNameTest() {
-        EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").position("QA").surname("Ivanov").build();
+        EmployeeRequest requestJSON = RequestFactory.createEmployeeRequestWOName("Moscow", "QA", "Ivanov");
 
-        ErrorResponse actualErrorResponse = given(requestSpecification).
-                body(requestJSON).
-                auth().oauth2(token).
-                when().post(Endpoints.EMPLOYEE).
+        ErrorResponse actualErrorResponse = CreateEmployeeAPI.getResponse(requestJSON).
                 then().
                 extract().as(ErrorResponse.class);
 
@@ -97,12 +84,9 @@ public class CreateEmployee extends BaseTest {
     @Test
     @DisplayName("Создать сотрудника без surname и position")
     public void createEmployeeWithoutSurnamePositionTest() {
-        EmployeeRequest requestJSON = EmployeeRequest.builder().city("Moscow").name("Ivan").build();
+        EmployeeRequest requestJSON = RequestFactory.createEmployeeRequestWOSurnamePosition("Moscow", "Ivan");
 
-        ErrorResponse actualErrorResponse = given(requestSpecification).
-                body(requestJSON).
-                auth().oauth2(token).
-                when().post(Endpoints.EMPLOYEE).
+        ErrorResponse actualErrorResponse = CreateEmployeeAPI.getResponse(requestJSON).
                 then().
                 extract().as(ErrorResponse.class);
 
