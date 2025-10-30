@@ -1,0 +1,20 @@
+<configuration>
+
+    <!-- Настройка уровня логирования для Hibernate -->
+    <logger name="org.hibernate" level="WARN"/> <!-- Выводим только WARN и ERROR для Hibernate -->
+    <logger name="org.hibernate.SQL" level="DEBUG"/> <!-- Логируем SQL-запросы, если нужно -->
+    <logger name="org.hibernate.type" level="WARN"/> <!-- Для логирования типов данных (можно отключить) -->
+
+    <!-- Настройка корневого уровня логирования -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <!-- Конфигурация аппендера для вывода логов в консоль -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+</configuration>
