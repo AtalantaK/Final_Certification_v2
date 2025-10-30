@@ -32,7 +32,6 @@ public class CreateEmployeeBAT extends BaseTest {
         int employeeId = CreateEmployeeAPI.getResponse(requestJSON).path("id");
         EmployeeResponse employeeResponse = new EmployeeResponse("Samara", employeeId, "Kseniia", "AQA", "Kalashnikova");
 
-        //todo: рефакторинг работы с БД
         //Ищем в БД нашего созданного сотрудника
         EmployeeResponse employeeDB = UserRepository.getEmployeeDB(employeeId);
 

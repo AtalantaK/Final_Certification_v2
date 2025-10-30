@@ -29,7 +29,7 @@ public class ServerUp {
 
         driver.navigate().refresh();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(180));
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//h2[text()='A swagger API']"))));
 
         driver.quit();

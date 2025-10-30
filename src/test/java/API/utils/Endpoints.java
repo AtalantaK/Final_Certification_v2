@@ -1,9 +1,20 @@
 package API.utils;
 
-public class Endpoints {
+public enum Endpoints {
+    EMPLOYEE("employee"),
+    NAME("name"),
+    EMPLOYEES("employees"),
+    AUTH("login");
+
     public static final String URI = "https://innopolispython.onrender.com/";
-    public static final String EMPLOYEE = "employee";
-    public static final String NAME = "name";
-    public static final String EMPLOYEES = "employees";
-    public static final String AUTH = "login";
+
+    private String endpointName;
+
+    Endpoints(String endpointName) {
+        this.endpointName = endpointName;
+    }
+
+    public String getEndpointName() {
+        return endpointName;
+    }
 }

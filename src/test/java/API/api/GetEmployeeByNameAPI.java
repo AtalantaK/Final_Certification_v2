@@ -9,6 +9,6 @@ import static io.restassured.RestAssured.given;
 public class GetEmployeeByNameAPI extends BaseTest {
     public static Response getResponse(String employeeName) {
         return given(requestSpecification).
-                when().get(Endpoints.EMPLOYEE + "/" + Endpoints.NAME + "/" + employeeName);
+                when().get(Endpoints.EMPLOYEE.getEndpointName() + "/" + Endpoints.NAME.getEndpointName() + "/" + employeeName);
     }
 }

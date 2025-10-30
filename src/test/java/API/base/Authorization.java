@@ -24,7 +24,7 @@ public class Authorization {
                 baseUri(Endpoints.URI).
                 body(requestJSON).contentType(ContentType.JSON).
                 log().all().
-                when().post(Endpoints.AUTH).jsonPath().getString("token");
+                when().post(Endpoints.AUTH.getEndpointName()).jsonPath().getString("token");
     }
 
     public static void main(String[] args) {

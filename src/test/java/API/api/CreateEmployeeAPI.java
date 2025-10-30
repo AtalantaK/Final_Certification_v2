@@ -14,7 +14,7 @@ public class CreateEmployeeAPI extends BaseTest {
         return given(requestSpecification).
                 body(requestJSON).
                 auth().oauth2(token).
-                when().post(Endpoints.EMPLOYEE);
+                when().post(Endpoints.EMPLOYEE.getEndpointName());
     }
 
     public static void checkID(Response response) {

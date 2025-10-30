@@ -12,7 +12,7 @@ import static io.restassured.RestAssured.given;
 public class GetEmployeesAPI extends BaseTest {
     public static Response getResponse() {
         return given(requestSpecification).
-                when().get(Endpoints.EMPLOYEES);
+                when().get(Endpoints.EMPLOYEES.getEndpointName());
     }
 
     public static List<EmployeeResponse> extractListEmployees(Response response) {

@@ -10,6 +10,6 @@ public class GetEmployeeByIDAPI extends BaseTest {
 
     public static Response getResponse(int employeeId) {
         return given(requestSpecification).
-                when().get(Endpoints.EMPLOYEE + "/" + employeeId);
+                when().get(Endpoints.EMPLOYEE.getEndpointName() + "/" + employeeId);
     }
 }

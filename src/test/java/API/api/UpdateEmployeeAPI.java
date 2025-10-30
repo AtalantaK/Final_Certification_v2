@@ -13,13 +13,13 @@ public class UpdateEmployeeAPI extends BaseTest {
         return given(requestSpecification).
                 body(requestJSON).
                 auth().oauth2(token).
-                when().put(Endpoints.EMPLOYEE + "/" + employeeId);
+                when().put(Endpoints.EMPLOYEE.getEndpointName() + "/" + employeeId);
     }
 
     public static Response getResponse(int employeeId, String requestJSON) {
         return given(requestSpecification).
                 body(requestJSON).
                 auth().oauth2(token).
-                when().put(Endpoints.EMPLOYEE + "/" + employeeId);
+                when().put(Endpoints.EMPLOYEE.getEndpointName() + "/" + employeeId);
     }
 }

@@ -10,6 +10,6 @@ public class DeleteEmployeeAPI extends BaseTest {
 
     public static Response getResponse(int employeeId) {
         return given(requestSpecification).
-                when().delete(Endpoints.EMPLOYEE + "/" + employeeId);
+                when().delete(Endpoints.EMPLOYEE.getEndpointName() + "/" + employeeId);
     }
 }
