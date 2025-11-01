@@ -211,8 +211,8 @@
                 <version>3.3.1</version>
                 <executions>
                     <execution>
-                        <id>copy-categories</id>
-                        <phase>test-compile</phase>
+                        <id>copy-categories-and-env</id>
+                        <phase>process-test-resources</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
@@ -220,12 +220,19 @@
                             <outputDirectory>${project.build.directory}/allure-results</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>src/test/resources</directory>
+                                    <directory>${basedir}/src/test/resources</directory>
                                     <includes>
                                         <include>categories.json</include>
                                     </includes>
                                 </resource>
+                                <resource>
+                                    <directory>${basedir}/src/test/resources</directory>
+                                    <includes>
+                                        <include>environment.properties</include>
+                                    </includes>
+                                </resource>
                             </resources>
+                            <overwrite>true</overwrite>
                         </configuration>
                     </execution>
                 </executions>
