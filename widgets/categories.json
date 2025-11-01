@@ -1,1 +1,1 @@
-{"total":0,"items":[]}
+{"total":2,"items":[{"uid":"43cbf875543d23d800dfb4e04afa808e","name":"Успешные кейсы","statistic":{"failed":0,"broken":0,"skipped":0,"passed":31,"unknown":0,"total":31}},{"uid":"dc162eacba23559ee71d87385f8886e3","name":"Пропущенные кейсы","statistic":{"failed":0,"broken":0,"skipped":2,"passed":0,"unknown":0,"total":2}}]}
