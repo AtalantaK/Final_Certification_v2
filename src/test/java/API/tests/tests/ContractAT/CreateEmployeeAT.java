@@ -8,21 +8,30 @@ import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
 import API.models.ErrorResponse;
 import API.utils.RequestFactory;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import jdk.jfr.Label;
+import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Contract AT. Создание нового сотрудника")
+@DisplayName("Создание нового сотрудника")
 public class CreateEmployeeAT extends BaseTest {
+
+    @BeforeEach
+    public void setupLabels() {
+        Allure.label("parentSuite", "API. Контрактные АТ");
+//        Allure.label("suite", "Создание нового сотрудника");
+    }
 
     @Test
     @DisplayName("Проверить код ответа")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Контрактная логика")
+    @Tag("POST")
     public void checkResponseCodeTest() {
         EmployeeRequest requestJSON = RequestFactory.createEmployeeRequest("Moscow", "Ivan", "QA", "Ivanov");
 
@@ -37,6 +46,9 @@ public class CreateEmployeeAT extends BaseTest {
 
     @Test
     @DisplayName("Проверить тело ответа")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Контрактная логика")
+    @Tag("POST")
     public void checkResponseBodyTest() {
         EmployeeRequest requestJSON = RequestFactory.createEmployeeRequest("Moscow", "Ivan", "QA", "Ivanov");
 
@@ -50,10 +62,17 @@ public class CreateEmployeeAT extends BaseTest {
         UserRepository.deleteEmployeeDB(employeeResponse);
     }
 
+
     @Test
     @DisplayName("Создать сотрудника без city")
-    @Disabled("Есть актуальный баг")
+//    @Disabled("Есть актуальный баг")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Контрактная логика")
+    @Tag("POST")
     public void createEmployeeWithoutCityTest() {
+
+        Assumptions.assumeTrue(false, "Есть актуальный баг");
+
         EmployeeRequest requestJSON = RequestFactory.createEmployeeRequestWOCity("Ivan", "QA", "Ivanov");
 
         Response response = CreateEmployeeAPI.getResponse(requestJSON);
@@ -68,6 +87,9 @@ public class CreateEmployeeAT extends BaseTest {
 
     @Test
     @DisplayName("Создать сотрудника без name")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Контрактная логика")
+    @Tag("POST")
     public void createEmployeeWithoutNameTest() {
         EmployeeRequest requestJSON = RequestFactory.createEmployeeRequestWOName("Moscow", "QA", "Ivanov");
 
@@ -83,6 +105,9 @@ public class CreateEmployeeAT extends BaseTest {
 
     @Test
     @DisplayName("Создать сотрудника без surname и position")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Контрактная логика")
+    @Tag("POST")
     public void createEmployeeWithoutSurnamePositionTest() {
         EmployeeRequest requestJSON = RequestFactory.createEmployeeRequestWOSurnamePosition("Moscow", "Ivan");
 

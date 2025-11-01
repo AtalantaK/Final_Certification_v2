@@ -4,11 +4,14 @@ import UI.saucedemo.config.Config;
 import UI.saucedemo.pages.*;
 import UI.saucedemo.utils.Constants;
 import UI.saucedemo.utils.PageFactory;
+import UI.saucedemo.utils.Users;
 import UI.saucedemo.utils.WebDriverUtils;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Severity;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -20,7 +23,7 @@ import java.time.Duration;
 import java.util.List;
 
 import static UI.saucedemo.utils.Products.*;
-import static UI.saucedemo.utils.Users.user1;
+import static UI.saucedemo.utils.Users.standard_user;
 import static io.qameta.allure.Allure.step;
 import static io.qameta.allure.SeverityLevel.BLOCKER;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,6 +31,12 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @DisplayName("E2E кейсы")
 public class E2E_AT {
+
+    @BeforeEach
+    public void setupLabels() {
+        Allure.label("parentSuite", "UI. E2E АТ");
+//        Allure.label("suite", "Создание нового сотрудника");
+    }
 
     private WebDriver driver;
     private PageFactory pageFactory;
@@ -47,7 +56,7 @@ public class E2E_AT {
     @Tags({@Tag("Authorization"), @Tag("E2E"), @Tag("Positive")})
     public void E2E_001_PlaceOrder() throws IOException {
         LoginPage loginPage = pageFactory.createLoginPage();
-        loginPage.login(user1.getUserName(), Config.get("UI_PASSWORD"));
+        loginPage.login(standard_user.getUserName(), Config.get("UI_PASSWORD"));
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//a[@class='shopping_cart_link']"))));

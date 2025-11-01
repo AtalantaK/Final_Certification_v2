@@ -1,11 +1,13 @@
 package API.base;
 
+import API.utils.AllureExecutorWriter;
 import API.utils.Endpoints;
 import API.utils.ServerUp;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
 public abstract class BaseTest {
@@ -19,6 +21,7 @@ public abstract class BaseTest {
 
     @BeforeAll
     public static void setUp() {
+
         ServerUp.isServerUp();
         RestAssured.useRelaxedHTTPSValidation();
         RestAssured.baseURI = Endpoints.URI;
@@ -28,5 +31,10 @@ public abstract class BaseTest {
                 baseUri(Endpoints.URI).
                 contentType(ContentType.JSON).
                 log().all();
+    }
+
+    @AfterAll
+    public static void completeTests(){
+        AllureExecutorWriter.createExecutorFile();
     }
 }

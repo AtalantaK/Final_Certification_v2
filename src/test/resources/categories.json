@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Успешные кейсы",
+    "matchedStatuses": ["passed"]
+  },
+  {
+    "name": "Пропущенные кейсы",
+    "matchedStatuses": ["skipped"]
+  }
+]

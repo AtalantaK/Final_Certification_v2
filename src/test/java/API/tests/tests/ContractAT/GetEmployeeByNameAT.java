@@ -7,17 +7,29 @@ import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
 import API.utils.RequestFactory;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Contract AT. Получить сотрудника по имени")
+@DisplayName("Получить сотрудника по имени")
 public class GetEmployeeByNameAT extends BaseTest {
+
+    @BeforeEach
+    public void setupLabels() {
+        Allure.label("parentSuite", "API. Контрактные АТ");
+//        Allure.label("suite", "Получить сотрудника по имени");
+    }
 
     @Test
     @DisplayName("Проверить код ответа")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Контрактная логика")
+    @Tag("GET")
     public void checkResponseCodeTest() {
 
         EmployeeRequest employeeRequest = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
@@ -33,6 +45,9 @@ public class GetEmployeeByNameAT extends BaseTest {
 
     @Test
     @DisplayName("Проверить тело ответа")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Контрактная логика")
+    @Tag("GET")
     public void checkResponseBodyTest() {
 
         EmployeeRequest employeeRequest = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
@@ -49,6 +64,9 @@ public class GetEmployeeByNameAT extends BaseTest {
 
     @Test
     @DisplayName("Найти сотрудника с несуществующим именем")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Контрактная логика")
+    @Tag("GET")
     public void getEmployeeWithNonExistenceNameTest() {
 
         String employeeName = "TestKseniiaForAT";

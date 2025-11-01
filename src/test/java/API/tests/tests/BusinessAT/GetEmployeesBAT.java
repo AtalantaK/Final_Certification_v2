@@ -4,21 +4,22 @@ import API.api.GetEmployeesAPI;
 import API.base.BaseTest;
 import API.repositories.UserRepository;
 import API.models.EmployeeResponse;
-import io.qameta.allure.Description;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Получение списка всех сотрудников")
+@DisplayName("Создание нового сотрудника")
 public class GetEmployeesBAT extends BaseTest {
+
+    @BeforeEach
+    public void setupLabels() {
+        Allure.label("parentSuite", "API. Бизнес АТ");
+//        Allure.label("suite", "Создание нового сотрудника");
+    }
 
     @Test
     @DisplayName("Получение списка всех сотрудников")

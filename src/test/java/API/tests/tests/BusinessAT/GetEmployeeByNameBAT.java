@@ -7,19 +7,20 @@ import API.repositories.UserRepository;
 import API.models.EmployeeRequest;
 import API.models.EmployeeResponse;
 import API.utils.RequestFactory;
-import io.qameta.allure.Description;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Получить сотрудника по имени")
 public class GetEmployeeByNameBAT extends BaseTest {
+
+    @BeforeEach
+    public void setupLabels() {
+        Allure.label("parentSuite", "API. Бизнес АТ");
+//        Allure.label("suite", "Получить сотрудника по имени");
+    }
 
     @Test
     @DisplayName("Получить сотрудника по имени")

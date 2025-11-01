@@ -9,9 +9,12 @@ import API.models.EmployeeResponse;
 import API.models.ResponseMessage;
 import API.models.ValidationErrorResponse;
 import API.utils.RequestFactory;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +24,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Обновить информацию о сотруднике")
 public class UpdateEmployeeAT extends BaseTest {
 
+    @BeforeEach
+    public void setupLabels() {
+        Allure.label("parentSuite", "API. Контрактные АТ");
+//        Allure.label("suite", "Обновить информацию о сотруднике");
+    }
+
     @Test
     @DisplayName("Проверить код ответа")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Контрактная логика")
+    @Tag("PUT")
     public void checkResponseCodeTest() {
 
         EmployeeRequest initialEmployee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
@@ -39,6 +51,9 @@ public class UpdateEmployeeAT extends BaseTest {
 
     @Test
     @DisplayName("Проверить тело ответа")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Контрактная логика")
+    @Tag("PUT")
     public void checkResponseBodyTest() {
 
         EmployeeRequest initialEmployee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
@@ -59,6 +74,9 @@ public class UpdateEmployeeAT extends BaseTest {
 
     @Test
     @DisplayName("Ошибка валидации данных")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Контрактная логика")
+    @Tag("PUT")
     public void validationErrorTest() {
 
         EmployeeRequest initialEmployee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
@@ -91,6 +109,9 @@ public class UpdateEmployeeAT extends BaseTest {
 
     @Test
     @DisplayName("Обновление несуществующего сотрудника")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Контрактная логика")
+    @Tag("PUT")
     public void updateNonExistenceEmployeeTest() {
 
         int employeeId = 123456789;
@@ -104,6 +125,9 @@ public class UpdateEmployeeAT extends BaseTest {
 
     @Test
     @DisplayName("Обновить только Город")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Контрактная логика")
+    @Tag("PUT")
     public void updateCityTest() {
 
         EmployeeRequest initialEmployee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
@@ -124,6 +148,9 @@ public class UpdateEmployeeAT extends BaseTest {
 
     @Test
     @DisplayName("Обновить только Имя")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Контрактная логика")
+    @Tag("PUT")
     public void updateNameTest() {
 
         EmployeeRequest initialEmployee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
@@ -144,6 +171,9 @@ public class UpdateEmployeeAT extends BaseTest {
 
     @Test
     @DisplayName("Обновить только Позицию")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Контрактная логика")
+    @Tag("PUT")
     public void updatePositionTest() {
 
         EmployeeRequest initialEmployee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");
@@ -164,6 +194,9 @@ public class UpdateEmployeeAT extends BaseTest {
 
     @Test
     @DisplayName("Обновить только Фамилию")
+    @Severity(SeverityLevel.BLOCKER)
+    @Story("Контрактная логика")
+    @Tag("PUT")
     public void updateSurnameTest() {
 
         EmployeeRequest initialEmployee = RequestFactory.createEmployeeRequest("Samara", "Kseniia", "Senior QA", "Kalashnikova");

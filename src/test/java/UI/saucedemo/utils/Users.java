@@ -1,9 +1,9 @@
 package UI.saucedemo.utils;
 
 public enum Users {
-    user1("standard_user"),
-    user2("locked_out_user"),
-    user3("performance_glitch_user");
+    standard_user("standard_user"),
+    locked_out_user("locked_out_user"),
+    performance_glitch_user("performance_glitch_user");
 
     private String userName;
 
