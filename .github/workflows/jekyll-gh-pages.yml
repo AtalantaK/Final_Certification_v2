@@ -1,5 +1,5 @@
 # Sample workflow for building and deploying a Jekyll site to GitHub Pages
-name: Deploy Jekyll with GitHub Pages dependencies preinstalled
+name: Build Jekyll after Maven success
 
 on:
   # Запускается только после успешного завершения Maven workflow
@@ -21,15 +21,13 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Deployment job
-  deploy:
+  build:
     # выполняется только если предыдущий workflow прошел успешно
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+#    environment:
+#      name: github-pages
+#      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout repository
@@ -46,7 +44,3 @@ jobs:
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
