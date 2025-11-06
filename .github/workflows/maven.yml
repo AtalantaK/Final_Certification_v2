@@ -69,6 +69,7 @@ jobs:
         with:
           name: allure-history
           path: target/allure-report/history
+        continue-on-error: true
 
         # Загрузка отчета как артефакт
       - name: Upload Allure report
