@@ -27,8 +27,17 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
+
       - name: Run tests
         run: mvn clean test
+
+      - name: Set build status
+        if: ${{ success() }}
+        run: echo "BUILD_STATUS=SUCCESS" >> $GITHUB_ENV
+
+      - name: Set build status failure
+        if: ${{ failure() }}
+        run: echo "BUILD_STATUS=FAILURE" >> $GITHUB_ENV
 
         # Установка Allure Commandline
       - name: Install Allure commandline
