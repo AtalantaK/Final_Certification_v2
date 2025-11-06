@@ -1,4 +1,4 @@
-package API.tests.tests.BusinessAT;
+package API.tests.BusinessAT;
 
 import API.api.GetEmployeeByNameAPI;
 import API.base.BaseAPI;

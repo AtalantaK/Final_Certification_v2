@@ -1,4 +1,4 @@
-package API.tests.tests.BusinessAT;
+package API.tests.BusinessAT;
 
 import API.api.GetEmployeesAPI;
 import API.base.BaseTest;

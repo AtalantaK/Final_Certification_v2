@@ -1,4 +1,4 @@
-package API.tests.tests.ContractAT;
+package API.tests.ContractAT;
 
 import API.api.DeleteEmployeeAPI;
 import API.base.BaseAPI;
