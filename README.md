@@ -51,7 +51,6 @@ mvn clean test
 ```
 После выполнения тестов отчёты появятся в:
 ```bash
-target/surefire-reports/
 target/allure-results/
 ```
 ## 📊 Генерация отчёта Allure
