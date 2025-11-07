@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/AtalantaK/Final_Certification_v2/actions/workflows/maven.yml/badge.svg)](https://github.com/AtalantaK/Final_Certification_v2/actions/maven.yml)
+[![Build Status](https://github.com/AtalantaK/Final_Certification_v2/actions/workflows/maven.yml/badge.svg)](https://github.com/AtalantaK/Final_Certification_v2/actions)
 [![Java Version](https://img.shields.io/badge/Java-17-blue.svg)](https://adoptium.net/)
 [![Maven](https://img.shields.io/badge/Maven-3.8+-orange.svg)](https://maven.apache.org/)
 [![Allure Report](https://img.shields.io/badge/Allure-Report-success.svg)](https://atalantak.github.io/Final_Certification_v2/)
