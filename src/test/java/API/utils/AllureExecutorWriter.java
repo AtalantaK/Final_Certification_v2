@@ -14,6 +14,11 @@ public class AllureExecutorWriter {
         String serverUrl = System.getenv("GITHUB_SERVER_URL");
         String buildStatus = System.getenv("BUILD_STATUS"); // берём из GITHUB_ENV - maven.yml
 
+//        для запуска локально так как локально нет GitHub
+        if (runNumber == null) {
+            runNumber = "0";
+        }
+
         JSONObject executor = new JSONObject();
         executor.put("name", "GitHub Actions");
         executor.put("type", "github");
